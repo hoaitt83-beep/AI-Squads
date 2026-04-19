@@ -99,6 +99,23 @@
       0%,100% { opacity: 1; } 50% { opacity: .65; }
     }
 
+    /* ── Warning banner ── */
+    .warn-banner {
+      display: none;
+      font-size: clamp(13px,3.2vw,17px); font-weight: 800;
+      padding: 8px 22px; border-radius: 50px;
+      background: linear-gradient(135deg, #FF6B35, #FF2D55);
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(255,45,85,.55);
+      animation: warnPulse .75s ease-in-out infinite alternate;
+    }
+    .warn-banner.show { display: block; }
+    @keyframes warnPulse {
+      from { transform: scale(1);    box-shadow: 0 4px 18px rgba(255,45,85,.5); }
+      to   { transform: scale(1.03); box-shadow: 0 6px 26px rgba(255,45,85,.85); }
+    }
+
     /* ── Board wrapper ── */
     .board-wrap {
       background: linear-gradient(145deg, #c8a060, #a0722a);
@@ -293,6 +310,9 @@
   <!-- Turn -->
   <div class="turn-banner" id="turnBanner">✕ Lượt Người Chơi 1</div>
 
+  <!-- Warning -->
+  <div class="warn-banner" id="warnBanner"></div>
+
   <!-- Board -->
   <div class="board-wrap">
     <div id="board"></div>
@@ -373,6 +393,7 @@ function initBoard() {
 
   refreshUI();
   document.getElementById('overlay').classList.remove('show');
+  document.getElementById('warnBanner').classList.remove('show');
 }
 
 // ─────────────────────────────────────────────
@@ -409,6 +430,7 @@ function play(r, c) {
       document.querySelector(`.cell[data-r="${wr}"][data-c="${wc}"]`).classList.add('win-cell')
     );
     over = true;
+    document.getElementById('warnBanner').classList.remove('show');
     scores[turn - 1]++;
     updateScores();
     setTimeout(() => showResult('win'), 600);
@@ -421,8 +443,48 @@ function play(r, c) {
     return;
   }
 
+  updateWarning(turn);
   turn = turn === 1 ? 2 : 1;
   refreshUI();
+}
+
+// ─────────────────────────────────────────────
+//  Threat check (3+ in a row, at least 1 open end)
+// ─────────────────────────────────────────────
+function checkOpenThreats(r, c, player) {
+  const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+  for (const [dr, dc] of dirs) {
+    let count = 1, openEnds = 0;
+    let nr = r + dr, nc = c + dc;
+    while (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === player) { count++; nr += dr; nc += dc; }
+    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0) openEnds++;
+    nr = r - dr; nc = c - dc;
+    while (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === player) { count++; nr -= dr; nc -= dc; }
+    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0) openEnds++;
+    if (count >= 3 && count < WIN && openEnds > 0) return true;
+  }
+  return false;
+}
+
+function updateWarning(justPlayed) {
+  const wb = document.getElementById('warnBanner');
+  const next = justPlayed === 1 ? 2 : 1;
+  const sym  = justPlayed === 1 ? '✕' : '○';
+  const col  = justPlayed === 1 ? '#FF8FA8' : '#80EDE0';
+
+  // Scan entire board for open threats by justPlayed player
+  let hasThreat = false;
+  for (let r = 0; r < SIZE && !hasThreat; r++)
+    for (let c = 0; c < SIZE && !hasThreat; c++)
+      if (grid[r][c] === justPlayed && checkOpenThreats(r, c, justPlayed))
+        hasThreat = true;
+
+  if (hasThreat) {
+    wb.innerHTML = `⚠️ Cẩn thận! <span style="color:${col}">${sym}</span> đã có 3 quân liên tiếp — hãy chặn lại!`;
+    wb.classList.add('show');
+  } else {
+    wb.classList.remove('show');
+  }
 }
 
 // ─────────────────────────────────────────────
