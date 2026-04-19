@@ -99,22 +99,15 @@
       0%,100% { opacity: 1; } 50% { opacity: .65; }
     }
 
-    /* ── Warning banner ── */
-    .warn-banner {
-      display: none;
-      font-size: clamp(13px,3.2vw,17px); font-weight: 800;
-      padding: 8px 22px; border-radius: 50px;
-      background: linear-gradient(135deg, #FF6B35, #FF2D55);
-      color: #fff;
-      text-align: center;
-      box-shadow: 0 4px 18px rgba(255,45,85,.55);
-      animation: warnPulse .75s ease-in-out infinite alternate;
+    /* ── Threat highlight on cells ── */
+    .cell.threat-cell .stone {
+      animation: threatGlow .55s ease-in-out infinite alternate !important;
     }
-    .warn-banner.show { display: block; }
-    @keyframes warnPulse {
-      from { transform: scale(1);    box-shadow: 0 4px 18px rgba(255,45,85,.5); }
-      to   { transform: scale(1.03); box-shadow: 0 6px 26px rgba(255,45,85,.85); }
+    @keyframes threatGlow {
+      from { filter: brightness(1);    box-shadow: 0 3px 12px rgba(255,140,0,.55); }
+      to   { filter: brightness(1.45); box-shadow: 0 0 28px rgba(255,60,0,1); }
     }
+    .cell.threat-cell { background: rgba(255,120,0,.18) !important; }
 
     /* ── Board wrapper ── */
     .board-wrap {
@@ -221,6 +214,13 @@
       box-shadow: 0 5px 16px rgba(245,87,108,.4);
     }
     .btn-reset:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(245,87,108,.5); }
+    .btn-undo {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #fff;
+      box-shadow: 0 5px 16px rgba(245,158,11,.4);
+    }
+    .btn-undo:hover  { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(245,158,11,.55); }
+    .btn-undo:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
     /* ── Overlay ── */
     #overlay {
@@ -310,9 +310,6 @@
   <!-- Turn -->
   <div class="turn-banner" id="turnBanner">✕ Lượt Người Chơi 1</div>
 
-  <!-- Warning -->
-  <div class="warn-banner" id="warnBanner"></div>
-
   <!-- Board -->
   <div class="board-wrap">
     <div id="board"></div>
@@ -320,6 +317,7 @@
 
   <!-- Controls -->
   <div class="controls">
+    <button class="btn btn-undo"  onclick="undoMove()" id="btnUndo" disabled>↩ Hoàn Tác</button>
     <button class="btn btn-new"   onclick="newGame()">🔄 Ván Mới</button>
     <button class="btn btn-reset" onclick="resetAll()">🗑️ Xóa Điểm</button>
   </div>
@@ -350,6 +348,7 @@ let grid       = [];
 let turn       = 1;       // 1 | 2
 let over       = false;
 let scores     = [0, 0];
+let history    = [];      // {r, c, player, scoredWin}
 let audioCtx   = null;
 
 // ─────────────────────────────────────────────
@@ -374,6 +373,7 @@ function initBoard() {
   grid = Array.from({ length: SIZE }, () => new Array(SIZE).fill(0));
   turn = 1;
   over = false;
+  history = [];
 
   const el = document.getElementById('board');
   el.innerHTML = '';
@@ -392,8 +392,9 @@ function initBoard() {
   }
 
   refreshUI();
+  clearThreats();
   document.getElementById('overlay').classList.remove('show');
-  document.getElementById('warnBanner').classList.remove('show');
+  document.getElementById('btnUndo').disabled = true;
 }
 
 // ─────────────────────────────────────────────
@@ -422,6 +423,10 @@ function play(r, c) {
   stone.textContent = turn === 1 ? '✕' : '○';
   cell.appendChild(stone);
 
+  const entry = { r, c, player: turn, scoredWin: false };
+  history.push(entry);
+  document.getElementById('btnUndo').disabled = false;
+
   playTone(turn);
 
   const winCells = checkWin(r, c);
@@ -430,7 +435,8 @@ function play(r, c) {
       document.querySelector(`.cell[data-r="${wr}"][data-c="${wc}"]`).classList.add('win-cell')
     );
     over = true;
-    document.getElementById('warnBanner').classList.remove('show');
+    entry.scoredWin = true;
+    clearThreats();
     scores[turn - 1]++;
     updateScores();
     setTimeout(() => showResult('win'), 600);
@@ -439,6 +445,7 @@ function play(r, c) {
 
   if (grid.flat().every(v => v)) {
     over = true;
+    clearThreats();
     setTimeout(() => showResult('draw'), 400);
     return;
   }
@@ -449,42 +456,88 @@ function play(r, c) {
 }
 
 // ─────────────────────────────────────────────
-//  Threat check (3+ in a row, at least 1 open end)
+//  Threat detection — returns Set of "r,c" keys
 // ─────────────────────────────────────────────
-function checkOpenThreats(r, c, player) {
+function findOpenThreats(player) {
   const dirs = [[0,1],[1,0],[1,1],[1,-1]];
-  for (const [dr, dc] of dirs) {
-    let count = 1, openEnds = 0;
-    let nr = r + dr, nc = c + dc;
-    while (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === player) { count++; nr += dr; nc += dc; }
-    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0) openEnds++;
-    nr = r - dr; nc = c - dc;
-    while (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === player) { count++; nr -= dr; nc -= dc; }
-    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0) openEnds++;
-    if (count >= 3 && count < WIN && openEnds > 0) return true;
+  const found = new Set();
+
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      if (grid[r][c] !== player) continue;
+      for (const [dr, dc] of dirs) {
+        // Skip if not the start of the sequence in this direction
+        const pr = r - dr, pc = c - dc;
+        if (pr >= 0 && pr < SIZE && pc >= 0 && pc < SIZE && grid[pr][pc] === player) continue;
+
+        // Collect full run
+        const cells = [[r, c]];
+        let nr = r + dr, nc = c + dc;
+        while (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === player) {
+          cells.push([nr, nc]); nr += dr; nc += dc;
+        }
+        const fwdOpen = nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0;
+        const bwdOpen = pr >= 0 && pr < SIZE && pc >= 0 && pc < SIZE && grid[pr][pc] === 0;
+
+        if (cells.length >= 3 && cells.length < WIN && (fwdOpen || bwdOpen)) {
+          cells.forEach(([cr, cc]) => found.add(`${cr},${cc}`));
+        }
+      }
+    }
   }
-  return false;
+  return found;
+}
+
+function clearThreats() {
+  document.querySelectorAll('.cell.threat-cell').forEach(el => el.classList.remove('threat-cell'));
 }
 
 function updateWarning(justPlayed) {
-  const wb = document.getElementById('warnBanner');
-  const next = justPlayed === 1 ? 2 : 1;
-  const sym  = justPlayed === 1 ? '✕' : '○';
-  const col  = justPlayed === 1 ? '#FF8FA8' : '#80EDE0';
+  clearThreats();
+  const threats = findOpenThreats(justPlayed);
+  threats.forEach(key => {
+    const [r, c] = key.split(',');
+    const cell = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+    if (cell) cell.classList.add('threat-cell');
+  });
+}
 
-  // Scan entire board for open threats by justPlayed player
-  let hasThreat = false;
-  for (let r = 0; r < SIZE && !hasThreat; r++)
-    for (let c = 0; c < SIZE && !hasThreat; c++)
-      if (grid[r][c] === justPlayed && checkOpenThreats(r, c, justPlayed))
-        hasThreat = true;
+// ─────────────────────────────────────────────
+//  Undo
+// ─────────────────────────────────────────────
+function undoMove() {
+  if (history.length === 0) return;
 
-  if (hasThreat) {
-    wb.innerHTML = `⚠️ Cẩn thận! <span style="color:${col}">${sym}</span> đã có 3 quân liên tiếp — hãy chặn lại!`;
-    wb.classList.add('show');
-  } else {
-    wb.classList.remove('show');
+  const last = history.pop();
+
+  // Close result overlay and confetti
+  document.getElementById('overlay').classList.remove('show');
+  document.querySelectorAll('.cf').forEach(el => el.remove());
+
+  // If it was a winning move, revert score and win highlights
+  if (last.scoredWin) {
+    scores[last.player - 1] = Math.max(0, scores[last.player - 1] - 1);
+    updateScores();
+    document.querySelectorAll('.cell.win-cell').forEach(el => el.classList.remove('win-cell'));
   }
+
+  // Remove the piece
+  grid[last.r][last.c] = 0;
+  const cell = document.querySelector(`.cell[data-r="${last.r}"][data-c="${last.c}"]`);
+  cell.classList.remove('taken');
+  cell.innerHTML = '';
+
+  over = false;
+  turn = last.player;
+
+  // Re-evaluate threats from the move before this one
+  clearThreats();
+  if (history.length > 0) {
+    updateWarning(history[history.length - 1].player);
+  }
+
+  document.getElementById('btnUndo').disabled = history.length === 0;
+  refreshUI();
 }
 
 // ─────────────────────────────────────────────
