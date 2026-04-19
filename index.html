@@ -77,7 +77,9 @@
       box-shadow: 0 0 24px rgba(0,201,177,.45);
       transform: scale(1.04);
     }
-    .card-symbol { font-size: clamp(28px,7vw,44px); line-height: 1.1; }
+    .card-symbol { font-size: clamp(28px,7vw,44px); line-height: 1.1; font-weight: 900; }
+    .sym-x { color: var(--p1); text-shadow: 0 0 16px rgba(255,75,110,.7); }
+    .sym-o { color: var(--p2); text-shadow: 0 0 16px rgba(0,201,177,.7); }
     .card-name { color: rgba(255,255,255,.8); font-size: 12px; font-weight: 800; letter-spacing: .5px; }
     .card-score { font-size: clamp(26px,7vw,42px); font-weight: 900; }
     .p1 .card-score { color: var(--p1); }
@@ -128,22 +130,29 @@
     .cell:not(.taken)::after {
       content: '';
       position: absolute;
-      width: calc(var(--cs) * .72);
-      height: calc(var(--cs) * .72);
-      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: calc(var(--cs) * .58);
+      font-weight: 900;
+      font-family: 'Nunito', sans-serif;
       opacity: 0;
       transition: opacity .15s;
       pointer-events: none;
     }
-    .turn-p1 .cell:not(.taken):hover::after { background: var(--p1); opacity: .22; }
-    .turn-p2 .cell:not(.taken):hover::after { background: var(--p2); opacity: .22; }
+    .turn-p1 .cell:not(.taken):hover::after { content: '✕'; color: var(--p1); opacity: .32; }
+    .turn-p2 .cell:not(.taken):hover::after { content: '○'; color: var(--p2); opacity: .32; }
 
     /* ── Pieces ── */
     .stone {
       position: absolute;
-      width: calc(var(--cs) * .76);
-      height: calc(var(--cs) * .76);
-      border-radius: 50%;
+      width: calc(var(--cs) * .84);
+      height: calc(var(--cs) * .84);
+      border-radius: 16%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: calc(var(--cs) * .58);
+      line-height: 1;
       animation: pop .35s cubic-bezier(.175,.885,.32,1.4) both;
     }
     @keyframes pop {
@@ -151,12 +160,16 @@
       to   { transform: scale(1) rotate(0deg);    opacity: 1; }
     }
     .stone.s1 {
-      background: radial-gradient(circle at 38% 35%, #FF8FA8, var(--p1) 70%);
-      box-shadow: 0 3px 10px rgba(255,75,110,.6), inset 0 2px 4px rgba(255,255,255,.4);
+      background: radial-gradient(circle at 38% 35%, #FF8FA8, #CC1133 80%);
+      box-shadow: 0 3px 12px rgba(204,17,51,.65), inset 0 2px 5px rgba(255,255,255,.35);
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.4);
     }
     .stone.s2 {
-      background: radial-gradient(circle at 38% 35%, #80EDE0, var(--p2) 70%);
-      box-shadow: 0 3px 10px rgba(0,201,177,.6), inset 0 2px 4px rgba(255,255,255,.4);
+      background: radial-gradient(circle at 38% 35%, #80EDE0, #0088AA 80%);
+      box-shadow: 0 3px 12px rgba(0,136,170,.65), inset 0 2px 5px rgba(255,255,255,.35);
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.4);
     }
 
     /* ── Win highlight ── */
@@ -266,19 +279,19 @@
   <!-- Players -->
   <div class="players">
     <div class="card p1" id="c1">
-      <div class="card-symbol">🔴</div>
+      <div class="card-symbol sym-x">✕</div>
       <div class="card-name">NGƯỜI CHƠI 1</div>
       <div class="card-score" id="s1">0</div>
     </div>
     <div class="card p2" id="c2">
-      <div class="card-symbol">🔵</div>
+      <div class="card-symbol sym-o">○</div>
       <div class="card-name">NGƯỜI CHƠI 2</div>
       <div class="card-score" id="s2">0</div>
     </div>
   </div>
 
   <!-- Turn -->
-  <div class="turn-banner" id="turnBanner">🔴 Lượt Người Chơi 1</div>
+  <div class="turn-banner" id="turnBanner">✕ Lượt Người Chơi 1</div>
 
   <!-- Board -->
   <div class="board-wrap">
@@ -385,6 +398,7 @@ function play(r, c) {
   cell.classList.add('taken');
   const stone = document.createElement('div');
   stone.className = `stone s${turn}`;
+  stone.textContent = turn === 1 ? '✕' : '○';
   cell.appendChild(stone);
 
   playTone(turn);
@@ -443,13 +457,13 @@ function refreshUI() {
   const boardEl = document.getElementById('board');
 
   if (turn === 1) {
-    banner.textContent   = '🔴 Lượt Người Chơi 1';
+    banner.textContent   = '✕  Lượt Người Chơi 1';
     banner.style.color   = '#FF8FA8';
     boardEl.className    = 'turn-p1';
     document.getElementById('c1').className = 'card p1 active-p1';
     document.getElementById('c2').className = 'card p2';
   } else {
-    banner.textContent   = '🔵 Lượt Người Chơi 2';
+    banner.textContent   = '○  Lượt Người Chơi 2';
     banner.style.color   = '#80EDE0';
     boardEl.className    = 'turn-p2';
     document.getElementById('c1').className = 'card p1';
@@ -474,11 +488,11 @@ function showResult(type) {
   if (type === 'win') {
     if (turn === 1) {
       emoji.textContent = '🥇';
-      title.textContent = '🔴 Người Chơi 1 Thắng!';
+      title.textContent = '✕  Người Chơi 1 Thắng!';
       title.style.color = '#FF6B8A';
     } else {
       emoji.textContent = '🏆';
-      title.textContent = '🔵 Người Chơi 2 Thắng!';
+      title.textContent = '○  Người Chơi 2 Thắng!';
       title.style.color = '#4ECDC4';
     }
     sub.textContent = '🎊 Xuất sắc lắm! Giỏi quá! 🎊';
