@@ -456,31 +456,42 @@ function play(r, c) {
 }
 
 // ─────────────────────────────────────────────
-//  Threat detection — returns Set of "r,c" keys
+//  Threat detection — pattern-based
+//  0 = empty cell, 1 = player's piece
+//  Includes reverse of asymmetric patterns
 // ─────────────────────────────────────────────
-function findOpenThreats(player) {
+const WARN_PATTERNS = [
+  [0, 1, 1, 1, 0],         // 01110
+  [0, 1, 1, 0, 1, 0],      // 011010
+  [0, 1, 0, 1, 1, 0],      // 010110  (mirror of above)
+  [0, 1, 1, 1, 1],         // 01111
+  [1, 1, 1, 1, 0],         // 11110   (mirror of 01111)
+  [0, 1, 0, 1, 1, 1],      // 010111
+  [1, 1, 1, 0, 1, 0],      // 111010  (mirror of 010111)
+];
+
+function findThreats(player) {
   const dirs = [[0,1],[1,0],[1,1],[1,-1]];
   const found = new Set();
 
-  for (let r = 0; r < SIZE; r++) {
-    for (let c = 0; c < SIZE; c++) {
-      if (grid[r][c] !== player) continue;
-      for (const [dr, dc] of dirs) {
-        // Skip if not the start of the sequence in this direction
-        const pr = r - dr, pc = c - dc;
-        if (pr >= 0 && pr < SIZE && pc >= 0 && pc < SIZE && grid[pr][pc] === player) continue;
-
-        // Collect full run
-        const cells = [[r, c]];
-        let nr = r + dr, nc = c + dc;
-        while (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === player) {
-          cells.push([nr, nc]); nr += dr; nc += dc;
-        }
-        const fwdOpen = nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0;
-        const bwdOpen = pr >= 0 && pr < SIZE && pc >= 0 && pc < SIZE && grid[pr][pc] === 0;
-
-        if (cells.length === WIN - 1 && (fwdOpen || bwdOpen)) {
-          cells.forEach(([cr, cc]) => found.add(`${cr},${cc}`));
+  for (const [dr, dc] of dirs) {
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        for (const pat of WARN_PATTERNS) {
+          const pieces = [];
+          let ok = true;
+          for (let k = 0; k < pat.length; k++) {
+            const nr = r + dr * k, nc = c + dc * k;
+            if (nr < 0 || nr >= SIZE || nc < 0 || nc >= SIZE) { ok = false; break; }
+            const val = grid[nr][nc];
+            if (pat[k] === 1) {
+              if (val !== player) { ok = false; break; }
+              pieces.push(`${nr},${nc}`);
+            } else {              // 0 must be empty
+              if (val !== 0) { ok = false; break; }
+            }
+          }
+          if (ok) pieces.forEach(k => found.add(k));
         }
       }
     }
@@ -494,7 +505,7 @@ function clearThreats() {
 
 function updateWarning(justPlayed) {
   clearThreats();
-  const threats = findOpenThreats(justPlayed);
+  const threats = findThreats(justPlayed);
   threats.forEach(key => {
     const [r, c] = key.split(',');
     const cell = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
