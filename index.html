@@ -479,7 +479,7 @@ function findOpenThreats(player) {
         const fwdOpen = nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && grid[nr][nc] === 0;
         const bwdOpen = pr >= 0 && pr < SIZE && pc >= 0 && pc < SIZE && grid[pr][pc] === 0;
 
-        if (cells.length >= 3 && cells.length < WIN && (fwdOpen || bwdOpen)) {
+        if (cells.length === WIN - 1 && (fwdOpen || bwdOpen)) {
           cells.forEach(([cr, cc]) => found.add(`${cr},${cc}`));
         }
       }
