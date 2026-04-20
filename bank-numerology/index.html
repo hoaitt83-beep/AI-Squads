@@ -123,14 +123,9 @@
   <p style="margin-top:6px;opacity:0.5">Thông tin mang tính tham khảo văn hóa và tinh thần. Mọi quyết định tài chính cần dựa trên tư vấn chuyên nghiệp.</p>
 </footer>
 
-<!-- ③ Load JS với version query string (cache-bust tự động) -->
-<script>
-  (function () {
-    ['js/analysis.js', 'js/app.js'].forEach(function (src) {
-      document.write('<script src="' + src + '?v=' + APP_VERSION + '"><\/script>');
-    });
-  })();
-</script>
+<!-- ③ Load JS — cập nhật ?v= khớp với APP_VERSION trong version.js khi deploy -->
+<script src="js/analysis.js?v=1.2.0"></script>
+<script src="js/app.js?v=1.2.0"></script>
 
 <script>
   // Hiển thị version number
