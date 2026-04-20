@@ -120,7 +120,7 @@ function renderReport(r, dob, account) {
           <span class="tab-icon">📖</span> Kinh Dịch
         </button>
         <button class="tab-btn tab-tcb" onclick="switchTab(this,'tab-tcb')">
-          <span class="tab-icon">🔥</span> Techcombank
+          <span class="tab-icon">🔥</span> T***bank
         </button>
       </nav>
 
@@ -344,20 +344,20 @@ function renderReport(r, dob, account) {
           <div class="section-header">
             <span class="section-icon">🔥</span>
             <div>
-              <div class="section-title" style="color:var(--tcb-red-light)">Phong Thủy Techcombank</div>
+              <div class="section-title" style="color:var(--tcb-red-light)">Phong Thủy T***bank</div>
               <div class="section-subtitle">Hỏa · Thổ · Kim — Tam Trụ Ngân Hàng</div>
             </div>
           </div>
           <div class="gold-divider"><span>✦</span></div>
 
           <div class="key-insight">
-            Techcombank mang <em style="color:var(--tcb-red-light)">mệnh Hỏa</em> — ngọn lửa của khát vọng bứt phá và tăng trưởng.
+            T***bank mang <em style="color:var(--tcb-red-light)">mệnh Hỏa</em> — ngọn lửa của khát vọng bứt phá và tăng trưởng.
             Bản mệnh <em>${ELEMENT_INFO[r.birthElement].name} ${ELEMENT_INFO[r.birthElement].emoji}</em> của bạn
-            kết hợp với Hỏa Techcombank theo quan hệ <em style="color:var(--tcb-red-light)">${r.tcbRelation.title.split('—')[0].trim()}</em>.
+            kết hợp với Hỏa T***bank theo quan hệ <em style="color:var(--tcb-red-light)">${r.tcbRelation.title.split('—')[0].trim()}</em>.
           </div>
 
           <!-- Tri-pillars -->
-          <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">Ba Trụ Cột Phong Thủy Techcombank</p>
+          <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">Ba Trụ Cột Phong Thủy T***bank</p>
           <div class="tcb-pillars">
             ${TCB_PILLARS.map(p => `
               <div class="tcb-pillar tcb-pillar-${p.key}">
@@ -370,7 +370,7 @@ function renderReport(r, dob, account) {
           </div>
 
           <!-- TCB × Customer relation -->
-          <p style="font-size:0.8rem;color:var(--text-dim);margin:20px 0 12px;text-transform:uppercase;letter-spacing:0.06em">Tương Quan Bản Mệnh × Techcombank</p>
+          <p style="font-size:0.8rem;color:var(--text-dim);margin:20px 0 12px;text-transform:uppercase;letter-spacing:0.06em">Tương Quan Bản Mệnh × T***bank</p>
           <div class="tcb-relation-card">
             <div class="tcb-relation-title">${r.tcbRelation.title}</div>
             <div class="tcb-relation-score">🔥 Chỉ số tương hợp: ${r.tcbRelation.score}/100</div>
@@ -384,8 +384,8 @@ function renderReport(r, dob, account) {
           </div>
 
           <div class="analysis-text">
-            <p>Ba trụ cột <strong style="color:var(--hoa-color)">Hỏa — Thổ — Kim</strong> của Techcombank không chỉ là triết lý kinh doanh mà còn là bộ khung phong thủy bảo vệ và phát triển tài sản cho từng khách hàng. Mỗi giao dịch qua tài khoản này là một lần năng lượng ba hành được kích hoạt đồng thời.</p>
-            <p>Số tài khoản <strong>${fmt}</strong> được trao bởi Techcombank không phải ngẫu nhiên — đây là con số mang trong mình dấu ấn của Hỏa năng lượng, Thổ ổn định và Kim tin cậy, trở thành người bạn đồng hành tài chính vừa có lửa bứt phá vừa có nền vững chắc.</p>
+            <p>Ba trụ cột <strong style="color:var(--hoa-color)">Hỏa — Thổ — Kim</strong> của T***bank không chỉ là triết lý kinh doanh mà còn là bộ khung phong thủy bảo vệ và phát triển tài sản cho từng khách hàng. Mỗi giao dịch qua tài khoản này là một lần năng lượng ba hành được kích hoạt đồng thời.</p>
+            <p>Số tài khoản <strong>${fmt}</strong> được trao bởi T***bank không phải ngẫu nhiên — đây là con số mang trong mình dấu ấn của Hỏa năng lượng, Thổ ổn định và Kim tin cậy, trở thành người bạn đồng hành tài chính vừa có lửa bứt phá vừa có nền vững chắc.</p>
           </div>
         </div>
 
@@ -490,11 +490,11 @@ function renderSequences(r) {
 function renderTCBAccountNarrative(r, fmt) {
   const el = ELEMENT_INFO[r.birthElement];
   const tcbMap = {
-    hoa:  `Hỏa gặp Hỏa — tài khoản ${fmt} của bạn tại Techcombank như hai ngọn lửa hội tụ, bùng cháy mạnh mẽ và trường tồn. Năng lượng Hỏa từ ngân hàng cộng với Hỏa bản mệnh tạo nên sức nóng đủ để "nung chảy" mọi rào cản tài chính.`,
-    moc:  `Mộc bản mệnh của bạn là nguồn nhiên liệu quý giúp ngọn lửa Techcombank cháy sáng hơn. Đổi lại, Hỏa Techcombank sẽ tiếp tục sưởi ấm và thúc đẩy Mộc của bạn sinh trưởng — vòng tương sinh này tạo ra tài vận ngày càng lớn mạnh theo năm tháng.`,
-    tho:  `Hỏa Techcombank sinh dưỡng trực tiếp vào Thổ bản mệnh bạn — mỗi đồng tiết kiệm, mỗi khoản đầu tư qua tài khoản này đều được "nung nóng" bởi năng lượng Hỏa, giúp Thổ của bạn thêm màu mỡ và tích lũy bền vững.`,
-    kim:  `Lửa Techcombank tôi luyện Kim bản mệnh bạn ngày một tinh thuần hơn. Tài khoản ${fmt} là chiếc lò rèn quý — mỗi năm gắn bó, Kim của bạn được lọc bỏ tạp chất và trở nên sắc bén, có giá trị cao hơn trong mọi giao dịch tài chính.`,
-    thuy: `Thủy bản mệnh gặp Hỏa Techcombank — như khi nước biển gặp ánh mặt trời, sinh ra hơi nước vận hành cả vũ trụ. Tài khoản ${fmt} là nơi hai nguồn năng lượng đối cực giao thoa, tạo ra sức mạnh tiềm tàng vượt trội hơn bất kỳ mệnh đơn lẻ nào.`,
+    hoa:  `Hỏa gặp Hỏa — tài khoản ${fmt} của bạn tại T***bank như hai ngọn lửa hội tụ, bùng cháy mạnh mẽ và trường tồn. Năng lượng Hỏa từ ngân hàng cộng với Hỏa bản mệnh tạo nên sức nóng đủ để "nung chảy" mọi rào cản tài chính.`,
+    moc:  `Mộc bản mệnh của bạn là nguồn nhiên liệu quý giúp ngọn lửa T***bank cháy sáng hơn. Đổi lại, Hỏa T***bank sẽ tiếp tục sưởi ấm và thúc đẩy Mộc của bạn sinh trưởng — vòng tương sinh này tạo ra tài vận ngày càng lớn mạnh theo năm tháng.`,
+    tho:  `Hỏa T***bank sinh dưỡng trực tiếp vào Thổ bản mệnh bạn — mỗi đồng tiết kiệm, mỗi khoản đầu tư qua tài khoản này đều được "nung nóng" bởi năng lượng Hỏa, giúp Thổ của bạn thêm màu mỡ và tích lũy bền vững.`,
+    kim:  `Lửa T***bank tôi luyện Kim bản mệnh bạn ngày một tinh thuần hơn. Tài khoản ${fmt} là chiếc lò rèn quý — mỗi năm gắn bó, Kim của bạn được lọc bỏ tạp chất và trở nên sắc bén, có giá trị cao hơn trong mọi giao dịch tài chính.`,
+    thuy: `Thủy bản mệnh gặp Hỏa T***bank — như khi nước biển gặp ánh mặt trời, sinh ra hơi nước vận hành cả vũ trụ. Tài khoản ${fmt} là nơi hai nguồn năng lượng đối cực giao thoa, tạo ra sức mạnh tiềm tàng vượt trội hơn bất kỳ mệnh đơn lẻ nào.`,
   };
   return tcbMap[r.birthElement] || tcbMap.hoa;
 }
