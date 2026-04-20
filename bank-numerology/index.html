@@ -5,19 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giải Mã Tài Vận T***bank — Phong Thủy Số Tài Khoản</title>
   <meta name="description" content="Khám phá ý nghĩa phong thủy và thần số học ẩn chứa trong số tài khoản T***bank của bạn">
-
-  <!-- ① Load version trước — nguồn duy nhất để cập nhật cache & số version -->
-  <script src="js/version.js"></script>
-
-  <!-- ② Inject CSS với version query string (cache-bust tự động) -->
-  <script>
-    (function () {
-      var l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = 'css/style.css?v=' + APP_VERSION;
-      document.head.appendChild(l);
-    })();
-  </script>
+  <!--
+    ══ CACHE BUSTING ══════════════════════════════════════════
+    Khi deploy: sửa APP_VERSION trong js/version.js, sau đó
+    cập nhật ?v= ở 3 dòng bên dưới cho khớp.
+    ══════════════════════════════════════════════════════════
+  -->
+  <link rel="stylesheet" href="css/style.css?v=1.2.0">
 </head>
 <body>
 
@@ -47,8 +41,6 @@
         <div class="tcb-header-desc">Tam Trụ Ngân Hàng</div>
       </div>
     </div>
-
-    <!-- Version badge — hiển thị góc phải brand bar -->
     <div class="app-version-badge" id="app-version-badge"></div>
   </div>
 
@@ -70,26 +62,12 @@
       <div class="form-grid">
         <div class="form-group">
           <label for="dob">Ngày Tháng Năm Sinh</label>
-          <input
-            type="text"
-            id="dob"
-            name="dob"
-            placeholder="DD/MM/YYYY"
-            maxlength="10"
-            inputmode="numeric"
-          >
+          <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric">
           <small>Ví dụ: 15/08/1990</small>
         </div>
         <div class="form-group">
           <label for="account">Số Tài Khoản T***bank</label>
-          <input
-            type="text"
-            id="account"
-            name="account"
-            placeholder="0123456789..."
-            maxlength="30"
-            inputmode="numeric"
-          >
+          <input type="text" id="account" name="account" placeholder="0123456789..." maxlength="30" inputmode="numeric">
           <small>Nhập đầy đủ số tài khoản TCB của bạn</small>
         </div>
       </div>
@@ -123,15 +101,15 @@
   <p style="margin-top:6px;opacity:0.5">Thông tin mang tính tham khảo văn hóa và tinh thần. Mọi quyết định tài chính cần dựa trên tư vấn chuyên nghiệp.</p>
 </footer>
 
-<!-- ③ Load JS — cập nhật ?v= khớp với APP_VERSION trong version.js khi deploy -->
+<!-- Scripts — version.js trước, sau đó app scripts -->
+<script src="js/version.js"></script>
 <script src="js/analysis.js?v=1.2.0"></script>
 <script src="js/app.js?v=1.2.0"></script>
 
 <script>
-  // Hiển thị version number
+  // Hiển thị version (APP_VERSION được định nghĩa trong version.js)
   document.getElementById('app-version-badge').textContent = 'v' + APP_VERSION;
 
-  // Auto-format DOB
   document.getElementById('dob').addEventListener('input', function (e) {
     let v = e.target.value.replace(/\D/g, '');
     if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
@@ -139,7 +117,6 @@
     e.target.value = v.slice(0, 10);
   });
 
-  // Chỉ cho nhập số
   document.getElementById('account').addEventListener('input', function (e) {
     e.target.value = e.target.value.replace(/[^\d]/g, '');
   });
