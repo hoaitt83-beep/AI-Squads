@@ -101,296 +101,268 @@ function renderReport(r, dob, account) {
       </div>
     </div>
 
-    <!-- TABS -->
-    <div class="tab-wrapper">
-      <nav class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab(this,'tab-numerology')">
-          <span class="tab-icon">🔢</span> Thần Số Học
-        </button>
-        <button class="tab-btn" onclick="switchTab(this,'tab-fengshui')">
-          <span class="tab-icon">☯️</span> Phong Thủy
-        </button>
-        <button class="tab-btn" onclick="switchTab(this,'tab-elements')">
-          <span class="tab-icon">⚡</span> Ngũ Hành
-        </button>
-        <button class="tab-btn" onclick="switchTab(this,'tab-sequences')">
-          <span class="tab-icon">🀄</span> Chuỗi Số
-        </button>
-        <button class="tab-btn" onclick="switchTab(this,'tab-iching')">
-          <span class="tab-icon">📖</span> Kinh Dịch
-        </button>
-        <button class="tab-btn tab-tcb" onclick="switchTab(this,'tab-tcb')">
-          <span class="tab-icon">🔥</span> T***bank
-        </button>
-      </nav>
+    <!-- SECTIONS (scroll dọc) -->
 
-      <div class="tab-panels">
-
-        <!-- TAB 1: THẦN SỐ HỌC -->
-        <div class="tab-panel active" id="tab-numerology">
-          <div class="section-header">
-            <span class="section-icon">🔢</span>
-            <div>
-              <div class="section-title">Thần Số Học</div>
-              <div class="section-subtitle">Numerology — Giải Mã Năng Lượng Số</div>
-            </div>
-          </div>
-          <div class="gold-divider"><span>✦</span></div>
-
-          <div class="key-insight">
-            Số đường đời của bạn là <em>${r.lifePath}</em> — <em>${r.lifePathInfo?.name || 'Số Vận Mệnh ' + r.lifePath}</em>.
-            Số vận tài khoản là <em>${r.accountNum}</em> (<em>${r.accountNumInfo?.meaning || ''}</em>).
-            Hai con số này ${renderCompatNote(r.lifePathSingle, r.accountNum)}.
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-            <div>
-              <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Số Đường Đời (Ngày Sinh)</p>
-              <div class="result-chip">
-                <div class="r-num">${r.lifePath}</div>
-                <div class="r-info">
-                  <div class="r-name">${r.lifePathInfo?.name || 'Số Vận Mệnh ' + r.lifePath}</div>
-                  <div class="r-desc">${r.lifePathInfo?.element || ''}</div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Số Vận Tài Khoản</p>
-              <div class="result-chip">
-                <div class="r-num">${r.accountNum}</div>
-                <div class="r-info">
-                  <div class="r-name">${r.accountNumInfo?.meaning || 'Số Vận ' + r.accountNum}</div>
-                  <div class="r-desc">${r.accountNumInfo?.sound ? '"' + r.accountNumInfo.sound.toUpperCase() + '"' : ''}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Phân tích từng chữ số</p>
-          <div class="digit-row">
-            ${r.digits.map(d => `
-              <div class="digit-chip">
-                <span class="d-num">${d}</span>
-                <span class="d-label">${SINGLE_NUM_INFO[d]?.sound || ''}</span>
-              </div>
-            `).join('<div class="arrow-chip">·</div>')}
-            <div class="arrow-chip">→</div>
-            <div class="digit-chip" style="border-color:var(--gold-dim);background:rgba(201,162,39,0.08)">
-              <span class="d-num" style="color:var(--gold-light)">${r.accountNum}</span>
-              <span class="d-label">Số vận</span>
-            </div>
-          </div>
-
-          <div class="highlight-box">
-            <strong>✦ Ý nghĩa số vận ${r.accountNum} — "${(r.accountNumInfo?.sound || '').toUpperCase()}":</strong>
-            ${r.accountNumInfo?.fengshui || ''}<br><br>
-            <strong>${r.accountNumInfo?.meaning || ''}</strong> — đây là mã năng lượng chủ đạo định hình toàn bộ tài vận gắn liền với số tài khoản này.
-          </div>
-
-          <div class="analysis-text">
-            <p>${r.lifePathInfo?.desc || ''}</p>
-          </div>
-
-          ${r.lifePathInfo?.keywords ? `<div class="tag-row">${r.lifePathInfo.keywords.map(k => `<span class="tag-pill">${k}</span>`).join('')}</div>` : ''}
+    <!-- THẦN SỐ HỌC -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-icon">🔢</span>
+        <div>
+          <div class="section-title">Thần Số Học</div>
+          <div class="section-subtitle">Numerology — Giải Mã Năng Lượng Số</div>
         </div>
+      </div>
+      <div class="gold-divider"><span>✦</span></div>
 
-        <!-- TAB 2: PHONG THỦY -->
-        <div class="tab-panel" id="tab-fengshui">
-          <div class="section-header">
-            <span class="section-icon">☯️</span>
-            <div>
-              <div class="section-title">Phong Thủy Học</div>
-              <div class="section-subtitle">Feng Shui — Dòng Chảy Năng Lượng Tài Vận</div>
+      <div class="key-insight">
+        Số đường đời của bạn là <em>${r.lifePath}</em> — <em>${r.lifePathInfo?.name || 'Số Vận Mệnh ' + r.lifePath}</em>.
+        Số vận tài khoản là <em>${r.accountNum}</em> (<em>${r.accountNumInfo?.meaning || ''}</em>).
+        Hai con số này ${renderCompatNote(r.lifePathSingle, r.accountNum)}.
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+        <div>
+          <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Số Đường Đời (Ngày Sinh)</p>
+          <div class="result-chip">
+            <div class="r-num">${r.lifePath}</div>
+            <div class="r-info">
+              <div class="r-name">${r.lifePathInfo?.name || 'Số Vận Mệnh ' + r.lifePath}</div>
+              <div class="r-desc">${r.lifePathInfo?.element || ''}</div>
             </div>
-          </div>
-          <div class="gold-divider"><span>✦</span></div>
-
-          <div class="key-insight">
-            Số tài khoản <em>${fmt}</em> mang trong mình <em>${renderFengShuiOpen(r)}</em> — tạo thành trường khí cát tường bao quanh chủ nhân.
-          </div>
-
-          ${r.eightCount > 0 ? `
-          <div class="gold-highlight">
-            <strong>🎯 Phát Hiện Số 8 × ${r.eightCount} — "BÁT PHÁT":</strong><br>
-            Số 8 trong tiếng Hán phát âm gần với chữ <strong>"Phát"</strong> (phát tài, phát lộc). Tài khoản chứa <strong>${r.eightCount} chữ số 8</strong> — mỗi lần giao dịch đều kích hoạt năng lượng phát tài, điềm báo cực kỳ cát tường.
-          </div>` : ''}
-
-          ${r.sixCount > 0 ? `
-          <div class="highlight-box">
-            <strong>🌟 Phát Hiện Số 6 × ${r.sixCount} — "LỘC TÀI":</strong><br>
-            Số 6 đồng âm với <strong>"Lộc"</strong> — tài lộc, phú quý. Tài khoản mang <strong>${r.sixCount} chữ 6</strong> như dòng lộc chảy không ngừng nghỉ, sung túc miên trường.
-          </div>` : ''}
-
-          ${r.nineCount > 0 ? `
-          <div class="highlight-box">
-            <strong>♾️ Phát Hiện Số 9 × ${r.nineCount} — "CỬU TRÙNG":</strong><br>
-            Số 9 tượng trưng cho <strong>sự trường tồn, vĩnh cửu</strong> — con số cao quý nhất Á Đông, biểu trưng cho thiên tử và vạn năm trường thịnh.
-          </div>` : ''}
-
-          <div class="analysis-text">
-            <p>${renderDigitByDigitFengShui(r)}</p>
-            <p>Theo lý thuyết phong thủy <strong>Lạc Thư — Hà Đồ</strong>, vị trí các chữ số trong chuỗi tài khoản tạo nên một <strong>ma trận năng lượng</strong> đặc biệt, thu hút dòng chảy tài vận từ bốn phương tám hướng về phía chủ nhân.</p>
           </div>
         </div>
-
-        <!-- TAB 3: NGŨ HÀNH -->
-        <div class="tab-panel" id="tab-elements">
-          <div class="section-header">
-            <span class="section-icon">⚡</span>
-            <div>
-              <div class="section-title">Ngũ Hành Tương Sinh</div>
-              <div class="section-subtitle">Five Elements — Kim Mộc Thủy Hỏa Thổ</div>
+        <div>
+          <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Số Vận Tài Khoản</p>
+          <div class="result-chip">
+            <div class="r-num">${r.accountNum}</div>
+            <div class="r-info">
+              <div class="r-name">${r.accountNumInfo?.meaning || 'Số Vận ' + r.accountNum}</div>
+              <div class="r-desc">${r.accountNumInfo?.sound ? '"' + r.accountNumInfo.sound.toUpperCase() + '"' : ''}</div>
             </div>
-          </div>
-          <div class="gold-divider"><span>✦</span></div>
-
-          <div class="key-insight">
-            Bản mệnh <em>${el[r.birthElement].name} ${el[r.birthElement].emoji}</em> và số tài khoản hành <em>${el[r.dominantAccountElement].name} ${el[r.dominantAccountElement].emoji}</em>
-            — quan hệ <em>${r.relation.label}</em>, độ tương hợp <em>${r.relation.pct}%</em>.
-          </div>
-
-          <div class="elements-display">
-            ${['kim','moc','thuy','hoa','tho'].map(e => `
-              <div class="elem-badge elem-${e} ${e === r.birthElement ? 'active' : ''}">
-                <span class="e-icon">${el[e].emoji}</span>
-                <span class="e-name">${el[e].name}</span>
-                <span class="e-nums">${el[e].nums}</span>
-                ${e === r.birthElement ? '<span style="font-size:0.7rem;margin-top:4px">● Bản Mệnh</span>' : ''}
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="analysis-text" style="margin-top:20px">
-            <p>Bạn sinh năm <strong>${r.birthYear}</strong>, bản mệnh thuộc hành <strong>${el[r.birthElement].name} (${el[r.birthElement].emoji})</strong> — ${el[r.birthElement].desc}</p>
-            <p>Số tài khoản có trường khí chủ đạo hành <strong>${el[r.dominantAccountElement].name}</strong>, tạo nên mối quan hệ <strong>${r.relation.label}</strong> với bản mệnh bạn.</p>
-          </div>
-
-          <div class="compat-bar-wrap" style="margin:20px 0">
-            <div class="compat-label">
-              <span>Độ Tương Hợp Ngũ Hành</span>
-              <span>${r.relation.pct}%</span>
-            </div>
-            <div class="compat-bar">
-              <div class="compat-fill" data-pct="${r.relation.pct}" style="width:0%"></div>
-            </div>
-          </div>
-
-          <div class="gold-highlight">
-            <strong>✦ ${r.relation.label}:</strong><br>${r.relation.desc}
-          </div>
-
-          <div class="analysis-text">
-            <p>${renderElementNarrative(r)}</p>
           </div>
         </div>
+      </div>
 
-        <!-- TAB 4: CHUỖI SỐ -->
-        <div class="tab-panel" id="tab-sequences">
-          <div class="section-header">
-            <span class="section-icon">🀄</span>
-            <div>
-              <div class="section-title">Chuỗi Số Cát Tường</div>
-              <div class="section-subtitle">Lucky Sequences — Tổ Hợp Số Phong Thủy</div>
-            </div>
+      <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Phân tích từng chữ số</p>
+      <div class="digit-row">
+        ${r.digits.map(d => `
+          <div class="digit-chip">
+            <span class="d-num">${d}</span>
+            <span class="d-label">${SINGLE_NUM_INFO[d]?.sound || ''}</span>
           </div>
-          <div class="gold-divider"><span>✦</span></div>
+        `).join('<div class="arrow-chip">·</div>')}
+        <div class="arrow-chip">→</div>
+        <div class="digit-chip" style="border-color:var(--gold-dim);background:rgba(201,162,39,0.08)">
+          <span class="d-num" style="color:var(--gold-light)">${r.accountNum}</span>
+          <span class="d-label">Số vận</span>
+        </div>
+      </div>
 
-          ${r.foundSeqs.length > 0 ? `
-          <div class="key-insight">
-            Tìm thấy <em>${r.foundSeqs.length} chuỗi số cát tường</em> trong tài khoản của bạn!
-            Mỗi chuỗi là một <em>"lớp phúc"</em> chồng lên nhau, tạo sức mạnh tổng hợp vượt bậc.
-          </div>` : `
-          <div class="key-insight">
-            Mỗi tổ hợp số đều mang ý nghĩa phong thủy riêng. Dưới đây là bảng tra cứu các <em>chuỗi số cát tường</em> phổ biến nhất trong văn hóa Á Đông.
-          </div>`}
+      <div class="highlight-box">
+        <strong>✦ Ý nghĩa số vận ${r.accountNum} — "${(r.accountNumInfo?.sound || '').toUpperCase()}":</strong>
+        ${r.accountNumInfo?.fengshui || ''}<br><br>
+        <strong>${r.accountNumInfo?.meaning || ''}</strong> — đây là mã năng lượng chủ đạo định hình toàn bộ tài vận gắn liền với số tài khoản này.
+      </div>
 
-          <div class="sequences-grid">
-            ${renderSequences(r)}
+      <div class="analysis-text">
+        <p>${r.lifePathInfo?.desc || ''}</p>
+      </div>
+
+      ${r.lifePathInfo?.keywords ? `<div class="tag-row">${r.lifePathInfo.keywords.map(k => `<span class="tag-pill">${k}</span>`).join('')}</div>` : ''}
+    </div>
+
+    <!-- PHONG THỦY -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-icon">☯️</span>
+        <div>
+          <div class="section-title">Phong Thủy Học</div>
+          <div class="section-subtitle">Feng Shui — Dòng Chảy Năng Lượng Tài Vận</div>
+        </div>
+      </div>
+      <div class="gold-divider"><span>✦</span></div>
+
+      <div class="key-insight">
+        Số tài khoản <em>${fmt}</em> mang trong mình <em>${renderFengShuiOpen(r)}</em> — tạo thành trường khí cát tường bao quanh chủ nhân.
+      </div>
+
+      ${r.eightCount > 0 ? `
+      <div class="gold-highlight">
+        <strong>🎯 Phát Hiện Số 8 × ${r.eightCount} — "BÁT PHÁT":</strong><br>
+        Số 8 trong tiếng Hán phát âm gần với chữ <strong>"Phát"</strong> (phát tài, phát lộc). Tài khoản chứa <strong>${r.eightCount} chữ số 8</strong> — mỗi lần giao dịch đều kích hoạt năng lượng phát tài, điềm báo cực kỳ cát tường.
+      </div>` : ''}
+
+      ${r.sixCount > 0 ? `
+      <div class="highlight-box">
+        <strong>🌟 Phát Hiện Số 6 × ${r.sixCount} — "LỘC TÀI":</strong><br>
+        Số 6 đồng âm với <strong>"Lộc"</strong> — tài lộc, phú quý. Tài khoản mang <strong>${r.sixCount} chữ 6</strong> như dòng lộc chảy không ngừng nghỉ, sung túc miên trường.
+      </div>` : ''}
+
+      ${r.nineCount > 0 ? `
+      <div class="highlight-box">
+        <strong>♾️ Phát Hiện Số 9 × ${r.nineCount} — "CỬU TRÙNG":</strong><br>
+        Số 9 tượng trưng cho <strong>sự trường tồn, vĩnh cửu</strong> — con số cao quý nhất Á Đông, biểu trưng cho thiên tử và vạn năm trường thịnh.
+      </div>` : ''}
+
+      <div class="analysis-text">
+        <p>${renderDigitByDigitFengShui(r)}</p>
+        <p>Theo lý thuyết phong thủy <strong>Lạc Thư — Hà Đồ</strong>, vị trí các chữ số trong chuỗi tài khoản tạo nên một <strong>ma trận năng lượng</strong> đặc biệt, thu hút dòng chảy tài vận từ bốn phương tám hướng về phía chủ nhân.</p>
+      </div>
+    </div>
+
+    <!-- NGŨ HÀNH -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-icon">⚡</span>
+        <div>
+          <div class="section-title">Ngũ Hành Tương Sinh</div>
+          <div class="section-subtitle">Five Elements — Kim Mộc Thủy Hỏa Thổ</div>
+        </div>
+      </div>
+      <div class="gold-divider"><span>✦</span></div>
+
+      <div class="key-insight">
+        Bản mệnh <em>${el[r.birthElement].name} ${el[r.birthElement].emoji}</em> và số tài khoản hành <em>${el[r.dominantAccountElement].name} ${el[r.dominantAccountElement].emoji}</em>
+        — quan hệ <em>${r.relation.label}</em>, độ tương hợp <em>${r.relation.pct}%</em>.
+      </div>
+
+      <div class="elements-display">
+        ${['kim','moc','thuy','hoa','tho'].map(e => `
+          <div class="elem-badge elem-${e} ${e === r.birthElement ? 'active' : ''}">
+            <span class="e-icon">${el[e].emoji}</span>
+            <span class="e-name">${el[e].name}</span>
+            <span class="e-nums">${el[e].nums}</span>
+            ${e === r.birthElement ? '<span style="font-size:0.7rem;margin-top:4px">● Bản Mệnh</span>' : ''}
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="analysis-text" style="margin-top:20px">
+        <p>Bạn sinh năm <strong>${r.birthYear}</strong>, bản mệnh thuộc hành <strong>${el[r.birthElement].name} (${el[r.birthElement].emoji})</strong> — ${el[r.birthElement].desc}</p>
+        <p>Số tài khoản có trường khí chủ đạo hành <strong>${el[r.dominantAccountElement].name}</strong>, tạo nên mối quan hệ <strong>${r.relation.label}</strong> với bản mệnh bạn.</p>
+      </div>
+
+      <div class="compat-bar-wrap" style="margin:20px 0">
+        <div class="compat-label">
+          <span>Độ Tương Hợp Ngũ Hành</span>
+          <span>${r.relation.pct}%</span>
+        </div>
+        <div class="compat-bar">
+          <div class="compat-fill" data-pct="${r.relation.pct}" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="gold-highlight">
+        <strong>✦ ${r.relation.label}:</strong><br>${r.relation.desc}
+      </div>
+
+      <div class="analysis-text">
+        <p>${renderElementNarrative(r)}</p>
+      </div>
+    </div>
+
+    <!-- CHUỖI SỐ -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-icon">🀄</span>
+        <div>
+          <div class="section-title">Chuỗi Số Cát Tường</div>
+          <div class="section-subtitle">Lucky Sequences — Tổ Hợp Số Phong Thủy</div>
+        </div>
+      </div>
+      <div class="gold-divider"><span>✦</span></div>
+
+      ${r.foundSeqs.length > 0 ? `
+      <div class="key-insight">
+        Tìm thấy <em>${r.foundSeqs.length} chuỗi số cát tường</em> trong tài khoản của bạn!
+        Mỗi chuỗi là một <em>"lớp phúc"</em> chồng lên nhau, tạo sức mạnh tổng hợp vượt bậc.
+      </div>` : `
+      <div class="key-insight">
+        Mỗi tổ hợp số đều mang ý nghĩa phong thủy riêng. Dưới đây là bảng tra cứu các <em>chuỗi số cát tường</em> phổ biến nhất trong văn hóa Á Đông.
+      </div>`}
+
+      <div class="sequences-grid">
+        ${renderSequences(r)}
+      </div>
+    </div>
+
+    <!-- KINH DỊCH -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-icon">📖</span>
+        <div>
+          <div class="section-title">Kinh Dịch Luận Số</div>
+          <div class="section-subtitle">I Ching — 64 Quẻ & Tài Vận</div>
+        </div>
+      </div>
+      <div class="gold-divider"><span>✦</span></div>
+
+      <div class="key-insight">
+        Chiếu theo pháp số Kinh Dịch, tài khoản của bạn ứng với quẻ <em>${r.hexagram.name}</em> —
+        <em>${r.hexagram.meaning}</em>.
+      </div>
+
+      <div class="hexagram-display">
+        <div class="hex-lines">
+          ${r.hexagram.lines.map(solid => `<div class="hex-line ${solid ? '' : 'broken'}"></div>`).join('')}
+        </div>
+        <div class="hex-name">${r.hexagram.name}</div>
+        <div class="hex-meaning">${r.hexagram.meaning}</div>
+      </div>
+
+      <div class="analysis-text">
+        <p>Trong hệ thống <strong>64 quẻ Kinh Dịch</strong>, mỗi quẻ là một trạng thái năng lượng của vũ trụ. Quẻ <strong>${r.hexagram.name}</strong> xuất hiện như điềm lành: người gắn bó lâu dài với số tài khoản này sẽ nhận được sự phù trợ của <strong>thiên thời, địa lợi và nhân hòa</strong> trong mọi quyết định tài chính.</p>
+        <p>Kinh Dịch dạy rằng sự <strong>kiên trì và bền bỉ</strong> mới là chìa khóa để hiện thực hóa tiềm năng của quẻ số — giữ vững số tài khoản là giữ vững nguồn năng lượng tích lũy theo thời gian.</p>
+      </div>
+    </div>
+
+    <!-- PHONG THỦY T***BANK -->
+    <div class="section-card section-card-tcb">
+      <div class="section-header">
+        <span class="section-icon">🔥</span>
+        <div>
+          <div class="section-title" style="color:var(--tcb-red-light)">Phong Thủy T***bank</div>
+          <div class="section-subtitle">Hỏa · Thổ · Kim — Tam Trụ Ngân Hàng</div>
+        </div>
+      </div>
+      <div class="gold-divider"><span>✦</span></div>
+
+      <div class="key-insight">
+        T***bank mang <em style="color:var(--tcb-red-light)">mệnh Hỏa</em> — ngọn lửa của khát vọng bứt phá và tăng trưởng.
+        Bản mệnh <em>${ELEMENT_INFO[r.birthElement].name} ${ELEMENT_INFO[r.birthElement].emoji}</em> của bạn
+        kết hợp với Hỏa T***bank theo quan hệ <em style="color:var(--tcb-red-light)">${r.tcbRelation.title.split('—')[0].trim()}</em>.
+      </div>
+
+      <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">Ba Trụ Cột Phong Thủy T***bank</p>
+      <div class="tcb-pillars">
+        ${TCB_PILLARS.map(p => `
+          <div class="tcb-pillar tcb-pillar-${p.key}">
+            <div class="p-icon">${p.icon}</div>
+            <div class="p-name">${p.name}</div>
+            <div class="p-sub">${p.sub}</div>
+            <div class="p-desc">${p.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <p style="font-size:0.8rem;color:var(--text-dim);margin:20px 0 12px;text-transform:uppercase;letter-spacing:0.06em">Tương Quan Bản Mệnh × T***bank</p>
+      <div class="tcb-relation-card">
+        <div class="tcb-relation-title">${r.tcbRelation.title}</div>
+        <div class="tcb-relation-score">🔥 Chỉ số tương hợp: ${r.tcbRelation.score}/100</div>
+        <div class="compat-bar-wrap" style="margin-bottom:16px">
+          <div class="compat-bar">
+            <div class="compat-fill compat-fill-tcb" data-pct="${r.tcbRelation.score}" style="width:0%"></div>
           </div>
         </div>
+        <div class="tcb-relation-desc">${r.tcbRelation.desc}</div>
+        <div class="tcb-relation-advice">💡 ${r.tcbRelation.advice}</div>
+      </div>
 
-        <!-- TAB 5: KINH DỊCH -->
-        <div class="tab-panel" id="tab-iching">
-          <div class="section-header">
-            <span class="section-icon">📖</span>
-            <div>
-              <div class="section-title">Kinh Dịch Luận Số</div>
-              <div class="section-subtitle">I Ching — 64 Quẻ & Tài Vận</div>
-            </div>
-          </div>
-          <div class="gold-divider"><span>✦</span></div>
-
-          <div class="key-insight">
-            Chiếu theo pháp số Kinh Dịch, tài khoản của bạn ứng với quẻ <em>${r.hexagram.name}</em> —
-            <em>${r.hexagram.meaning}</em>.
-          </div>
-
-          <div class="hexagram-display">
-            <div class="hex-lines">
-              ${r.hexagram.lines.map(solid => `<div class="hex-line ${solid ? '' : 'broken'}"></div>`).join('')}
-            </div>
-            <div class="hex-name">${r.hexagram.name}</div>
-            <div class="hex-meaning">${r.hexagram.meaning}</div>
-          </div>
-
-          <div class="analysis-text">
-            <p>Trong hệ thống <strong>64 quẻ Kinh Dịch</strong>, mỗi quẻ là một trạng thái năng lượng của vũ trụ. Quẻ <strong>${r.hexagram.name}</strong> xuất hiện như điềm lành: người gắn bó lâu dài với số tài khoản này sẽ nhận được sự phù trợ của <strong>thiên thời, địa lợi và nhân hòa</strong> trong mọi quyết định tài chính.</p>
-            <p>Kinh Dịch dạy rằng sự <strong>kiên trì và bền bỉ</strong> mới là chìa khóa để hiện thực hóa tiềm năng của quẻ số — giữ vững số tài khoản là giữ vững nguồn năng lượng tích lũy theo thời gian.</p>
-          </div>
-        </div>
-
-        <!-- TAB 6: TECHCOMBANK -->
-        <div class="tab-panel" id="tab-tcb">
-          <div class="section-header">
-            <span class="section-icon">🔥</span>
-            <div>
-              <div class="section-title" style="color:var(--tcb-red-light)">Phong Thủy T***bank</div>
-              <div class="section-subtitle">Hỏa · Thổ · Kim — Tam Trụ Ngân Hàng</div>
-            </div>
-          </div>
-          <div class="gold-divider"><span>✦</span></div>
-
-          <div class="key-insight">
-            T***bank mang <em style="color:var(--tcb-red-light)">mệnh Hỏa</em> — ngọn lửa của khát vọng bứt phá và tăng trưởng.
-            Bản mệnh <em>${ELEMENT_INFO[r.birthElement].name} ${ELEMENT_INFO[r.birthElement].emoji}</em> của bạn
-            kết hợp với Hỏa T***bank theo quan hệ <em style="color:var(--tcb-red-light)">${r.tcbRelation.title.split('—')[0].trim()}</em>.
-          </div>
-
-          <!-- Tri-pillars -->
-          <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em">Ba Trụ Cột Phong Thủy T***bank</p>
-          <div class="tcb-pillars">
-            ${TCB_PILLARS.map(p => `
-              <div class="tcb-pillar tcb-pillar-${p.key}">
-                <div class="p-icon">${p.icon}</div>
-                <div class="p-name">${p.name}</div>
-                <div class="p-sub">${p.sub}</div>
-                <div class="p-desc">${p.desc}</div>
-              </div>
-            `).join('')}
-          </div>
-
-          <!-- TCB × Customer relation -->
-          <p style="font-size:0.8rem;color:var(--text-dim);margin:20px 0 12px;text-transform:uppercase;letter-spacing:0.06em">Tương Quan Bản Mệnh × T***bank</p>
-          <div class="tcb-relation-card">
-            <div class="tcb-relation-title">${r.tcbRelation.title}</div>
-            <div class="tcb-relation-score">🔥 Chỉ số tương hợp: ${r.tcbRelation.score}/100</div>
-            <div class="compat-bar-wrap" style="margin-bottom:16px">
-              <div class="compat-bar">
-                <div class="compat-fill compat-fill-tcb" data-pct="${r.tcbRelation.score}" style="width:0%"></div>
-              </div>
-            </div>
-            <div class="tcb-relation-desc">${r.tcbRelation.desc}</div>
-            <div class="tcb-relation-advice">💡 ${r.tcbRelation.advice}</div>
-          </div>
-
-          <div class="analysis-text">
-            <p>Ba trụ cột <strong style="color:var(--hoa-color)">Hỏa — Thổ — Kim</strong> của T***bank không chỉ là triết lý kinh doanh mà còn là bộ khung phong thủy bảo vệ và phát triển tài sản cho từng khách hàng. Mỗi giao dịch qua tài khoản này là một lần năng lượng ba hành được kích hoạt đồng thời.</p>
-            <p>Số tài khoản <strong>${fmt}</strong> được trao bởi T***bank không phải ngẫu nhiên — đây là con số mang trong mình dấu ấn của Hỏa năng lượng, Thổ ổn định và Kim tin cậy, trở thành người bạn đồng hành tài chính vừa có lửa bứt phá vừa có nền vững chắc.</p>
-          </div>
-        </div>
-
-      </div><!-- end tab-panels -->
-    </div><!-- end tab-wrapper -->
+      <div class="analysis-text">
+        <p>Ba trụ cột <strong style="color:var(--hoa-color)">Hỏa — Thổ — Kim</strong> của T***bank không chỉ là triết lý kinh doanh mà còn là bộ khung phong thủy bảo vệ và phát triển tài sản cho từng khách hàng. Mỗi giao dịch qua tài khoản này là một lần năng lượng ba hành được kích hoạt đồng thời.</p>
+        <p>Số tài khoản <strong>${fmt}</strong> được trao bởi T***bank không phải ngẫu nhiên — đây là con số mang trong mình dấu ấn của Hỏa năng lượng, Thổ ổn định và Kim tin cậy, trở thành người bạn đồng hành tài chính vừa có lửa bứt phá vừa có nền vững chắc.</p>
+      </div>
+    </div>
 
     <!-- ACTION ROW -->
     <div class="action-row">
@@ -404,22 +376,6 @@ function renderReport(r, dob, account) {
       el.style.width = el.dataset.pct + '%';
     });
   }, 400);
-}
-
-// ── Tab switching ──────────────────────────────────────────────
-function switchTab(btn, panelId) {
-  btn.closest('.tab-wrapper').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.closest('.tab-wrapper').querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(panelId).classList.add('active');
-
-  if (panelId === 'tab-elements' || panelId === 'tab-tcb') {
-    setTimeout(() => {
-      document.querySelectorAll('.compat-fill').forEach(el => {
-        el.style.width = el.dataset.pct + '%';
-      });
-    }, 100);
-  }
 }
 
 // ── Render helpers ─────────────────────────────────────────────
