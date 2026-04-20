@@ -95,6 +95,61 @@ const HEXAGRAMS = [
   { name: '䷃ Mông - Sơn Thủy', lines: [false,true,false,false,false,true], meaning: 'Khai minh học hỏi, nền tảng tri thức tạo nên vận mệnh vĩ đại' },
 ];
 
+// ── Techcombank Feng Shui ─────────────────────────────────────
+const TCB_ELEMENT = 'hoa'; // Techcombank mệnh Hỏa
+
+const TCB_PILLARS = [
+  {
+    key: 'hoa', icon: '🔥', name: 'Hỏa', sub: 'Năng lượng & Bứt phá',
+    desc: 'Sức bùng cháy của khát vọng, nhiệt huyết dẫn đường tới đỉnh cao tài chính.'
+  },
+  {
+    key: 'tho', icon: '⛰️', name: 'Thổ', sub: 'Vững vàng & Tích lũy',
+    desc: 'Nền tảng vững chắc, tích lũy bền bỉ — tài sản lớn lên từng ngày trên đất vững.'
+  },
+  {
+    key: 'kim', icon: '💎', name: 'Kim', sub: 'Minh bạch & Tin cậy',
+    desc: 'Chuẩn mực như kim cương, minh bạch như gương — uy tín là tài sản quý nhất.'
+  },
+];
+
+const TCB_RELATION = {
+  hoa: {
+    title: 'Đồng Hành Hỏa × Hỏa — Nhiệt Huyết Song Trùng',
+    score: 96,
+    desc: 'Bạn và Techcombank cùng mang mệnh Hỏa — hai luồng năng lượng cùng tần số gặp nhau, cộng hưởng và bùng cháy mạnh mẽ. Mỗi giao dịch là một lần nhiệt huyết được nhân đôi, tài lộc phát sinh theo cấp số nhân.',
+    advice: 'Đây là sự gắn kết thiên định — bạn và Techcombank sinh ra để đồng hành, cùng nhau chinh phục mọi đỉnh cao tài chính mà bạn hướng tới.',
+  },
+  moc: {
+    title: 'Mộc Sinh Hỏa — Bạn Là Nguồn Cội Tăng Trưởng',
+    score: 98,
+    desc: 'Mộc là nhiên liệu thiết yếu của Hỏa — bản mệnh Mộc của bạn liên tục bổ sung năng lượng, nuôi dưỡng và làm bùng sáng ngọn lửa Techcombank. Mối quan hệ tương sinh này tạo ra vòng tăng trưởng không ngừng: bạn cung cấp sức sống, ngân hàng trả lại bằng tài lộc.',
+    advice: 'Mộc-Hỏa là cặp tương sinh mạnh nhất trong ngũ hành — người mệnh Mộc gắn bó với Techcombank đang nắm giữ chìa khóa vàng của sự thịnh vượng bền vững.',
+  },
+  tho: {
+    title: 'Hỏa Sinh Thổ — Techcombank Vun Đắp Nền Tảng Của Bạn',
+    score: 94,
+    desc: 'Hỏa của Techcombank sinh dưỡng Thổ bản mệnh bạn — như lửa nung đất sét thành gốm quý, như lò nhiệt luyện thành đất phì nhiêu. Mỗi năm gắn bó, năng lượng Hỏa từ Techcombank liên tục bồi đắp bản mệnh Thổ của bạn thêm vững chắc, sung túc và giàu có.',
+    advice: 'Người mệnh Thổ gắn với Techcombank là đang hưởng Hỏa sinh Thổ — nền tảng tài chính ngày càng dày dặn, tích lũy bền vững theo đúng triết lý Thổ của ngũ hành.',
+  },
+  kim: {
+    title: 'Hỏa Luyện Kim — Tôi Luyện Để Trở Nên Quý Giá',
+    score: 88,
+    desc: 'Hỏa tôi luyện Kim thành vật báu — đây không phải mâu thuẫn mà là quá trình hoàn thiện cao nhất. Techcombank với năng lượng Hỏa bứt phá, minh bạch và chuẩn mực sẽ giúp bản mệnh Kim của bạn được "nung luyện", trở nên sắc bén, tinh thuần và có giá trị hơn theo từng giao dịch.',
+    advice: 'Vàng thật không sợ lửa — người mệnh Kim gắn với Techcombank đang bước qua lò nung luyện để trở thành kim cương không thể phá vỡ, tài sản bền vững không thể bào mòn.',
+  },
+  thuy: {
+    title: 'Hỏa Thủy Tương Giao — Hơi Nước: Sức Mạnh Vô Hình',
+    score: 90,
+    desc: 'Khi Hỏa gặp Thủy, không phải triệt tiêu mà sinh ra hơi nước — nguồn năng lượng vĩ đại từng thay đổi lịch sử nhân loại. Bản mệnh Thủy linh hoạt và trí tuệ của bạn kết hợp với Hỏa nhiệt huyết của Techcombank tạo ra sức mạnh vô hình nhưng bền bỉ, luôn chuyển động và không ngừng sinh sôi.',
+    advice: 'Hơi nước (Thủy-Hỏa kết hợp) từng vận hành cả cuộc cách mạng công nghiệp — đây là dấu hiệu của một tài vận có chiều sâu, sức chuyển hóa lớn lao và tầm nhìn vượt thời đại.',
+  },
+};
+
+function getTCBRelation(birthElement) {
+  return TCB_RELATION[birthElement] || TCB_RELATION.hoa;
+}
+
 // ── Main analysis function ────────────────────────────────────
 function analyzeAccount(dob, accountNumber) {
   const digits = accountNumber.replace(/\D/g, '').split('').map(Number);
@@ -146,6 +201,8 @@ function analyzeAccount(dob, accountNumber) {
   const baseLuck = SINGLE_NUM_INFO[accountNum]?.luck || 85;
   const overallScore = Math.min(99, Math.round((baseLuck + seqBonus + luckyDigitBonus * 0.5 + relation.pct * 0.1) / 1.12));
 
+  const tcbRelation = getTCBRelation(birthElement);
+
   return {
     digits, accountStr, birthYear, birthDay, birthMonth,
     lifePath, lifePathSingle, lifePathInfo: LIFE_PATH_INFO[lifePath] || LIFE_PATH_INFO[lifePathSingle],
@@ -154,6 +211,7 @@ function analyzeAccount(dob, accountNumber) {
     relation, foundSeqs, hexagram,
     numCompat, overallScore,
     eightCount, sixCount, nineCount,
+    tcbRelation,
   };
 }
 

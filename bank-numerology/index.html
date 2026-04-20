@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giải Mã Tài Vận — Phong Thủy Số Tài Khoản</title>
-  <meta name="description" content="Khám phá ý nghĩa phong thủy và thần số học ẩn chứa trong số tài khoản ngân hàng của bạn">
+  <title>Giải Mã Tài Vận Techcombank — Phong Thủy Số Tài Khoản</title>
+  <meta name="description" content="Khám phá ý nghĩa phong thủy và thần số học ẩn chứa trong số tài khoản Techcombank của bạn">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,15 +12,37 @@
 <div id="particles-bg"></div>
 
 <header>
+  <!-- TCB BRAND BAR -->
+  <div class="tcb-brand-bar">
+    <div class="tcb-logo-wrap">
+      <svg class="tcb-logo-svg" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="2" width="48" height="48" rx="7" fill="#CC0000"/>
+        <rect x="9" y="13" width="30" height="6" fill="white" rx="2.5"/>
+        <rect x="20.5" y="13" width="7" height="30" fill="white" rx="2.5"/>
+        <text x="60" y="25" font-family="Arial Black,Arial,sans-serif" font-size="14" font-weight="900" fill="#CC0000" letter-spacing="1.5">TECHCOM</text>
+        <text x="60" y="44" font-family="Arial Black,Arial,sans-serif" font-size="14" font-weight="900" fill="#CC0000" letter-spacing="1.5">BANK</text>
+      </svg>
+      <div class="tcb-divider-v"></div>
+      <div class="tcb-flame-badge">
+        <span class="tcb-flame-icon">🔥</span>
+        <span class="tcb-flame-label">Mệnh Hỏa</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MYSTICAL TITLE -->
   <div class="logo-symbol">☯</div>
   <h1>Giải Mã Tài Vận</h1>
-  <p class="subtitle">Phong Thủy · Thần Số Học · Kinh Dịch · Ngũ Hành</p>
+  <p class="subtitle">Phong Thủy · Thần Số Học · Kinh Dịch · Ngũ Hành · Techcombank</p>
 </header>
 
 <main>
 
   <!-- INPUT CARD -->
   <div class="input-card">
+    <div class="tcb-input-badge">
+      <span>🏦</span> Dành riêng cho khách hàng <strong>Techcombank</strong>
+    </div>
     <h2>✦ Nhập Thông Tin Để Giải Mã ✦</h2>
     <form id="analysis-form" autocomplete="off">
       <div class="form-grid">
@@ -37,7 +59,7 @@
           <small>Ví dụ: 15/08/1990</small>
         </div>
         <div class="form-group">
-          <label for="account">Số Tài Khoản Ngân Hàng</label>
+          <label for="account">Số Tài Khoản Techcombank</label>
           <input
             type="text"
             id="account"
@@ -46,10 +68,10 @@
             maxlength="30"
             inputmode="numeric"
           >
-          <small>Nhập đầy đủ số tài khoản của bạn</small>
+          <small>Nhập đầy đủ số tài khoản TCB của bạn</small>
         </div>
       </div>
-      <button type="submit" class="btn-analyze">✦ Giải Mã Tài Vận ✦</button>
+      <button type="submit" class="btn-analyze">🔥 Giải Mã Tài Vận Techcombank ✦</button>
       <p class="error-msg" id="error-msg"></p>
     </form>
   </div>
@@ -57,7 +79,7 @@
   <!-- LOADING -->
   <div class="loading-overlay" id="loading">
     <div class="loading-spinner"></div>
-    <p class="loading-text">Đang chiếu số theo phong thủy và thần số học...</p>
+    <p class="loading-text">Đang chiếu số theo phong thủy Techcombank...</p>
   </div>
 
   <!-- REPORT OUTPUT -->
@@ -66,15 +88,23 @@
 </main>
 
 <footer>
-  <p>☯ Giải Mã Tài Vận — Phong Thủy · Thần Số Học · Kinh Dịch</p>
-  <p style="margin-top:6px;opacity:0.6">Thông tin mang tính tham khảo văn hóa và tinh thần. Mọi quyết định tài chính cần dựa trên tư vấn chuyên nghiệp.</p>
+  <div class="footer-tcb-logo">
+    <svg viewBox="0 0 100 28" xmlns="http://www.w3.org/2000/svg" height="22">
+      <rect x="0" y="1" width="26" height="26" rx="4" fill="#CC0000" opacity="0.7"/>
+      <rect x="5" y="7" width="16" height="3.5" fill="white" rx="1.5"/>
+      <rect x="11" y="7" width="4" height="17" fill="white" rx="1.5"/>
+      <text x="32" y="14" font-family="Arial,sans-serif" font-size="7" font-weight="900" fill="#CC0000" opacity="0.7" letter-spacing="0.5">TECHCOM</text>
+      <text x="32" y="24" font-family="Arial,sans-serif" font-size="7" font-weight="900" fill="#CC0000" opacity="0.7" letter-spacing="0.5">BANK</text>
+    </svg>
+  </div>
+  <p>☯ Giải Mã Tài Vận — Phong Thủy · Thần Số Học · Kinh Dịch · Techcombank</p>
+  <p style="margin-top:6px;opacity:0.5">Thông tin mang tính tham khảo văn hóa và tinh thần. Mọi quyết định tài chính cần dựa trên tư vấn chuyên nghiệp.</p>
 </footer>
 
 <script src="js/analysis.js"></script>
 <script src="js/app.js"></script>
 
 <script>
-  // Auto-format DOB input
   document.getElementById('dob').addEventListener('input', function(e) {
     let v = e.target.value.replace(/\D/g, '');
     if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
@@ -82,7 +112,6 @@
     e.target.value = v.slice(0, 10);
   });
 
-  // Auto-format account number
   document.getElementById('account').addEventListener('input', function(e) {
     e.target.value = e.target.value.replace(/[^\d]/g, '');
   });
