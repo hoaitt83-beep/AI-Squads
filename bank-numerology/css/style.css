@@ -73,7 +73,6 @@ header {
   margin-bottom: 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 /* Version badge */
@@ -84,6 +83,13 @@ header {
   font-family: monospace;
   user-select: none;
   flex-shrink: 0;
+}
+
+.tcb-logo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
 }
 
 .tcb-logo-wrap {
