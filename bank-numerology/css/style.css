@@ -35,6 +35,7 @@ body {
 /* ========== BACKGROUND PARTICLES ========== */
 #particles-bg {
   position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0; /* fallback for Safari < 15.4 */
   inset: 0;
   pointer-events: none;
   z-index: 0;
@@ -65,16 +66,6 @@ header {
   border-bottom: 1px solid var(--border);
 }
 
-/* TCB brand bar */
-.tcb-brand-bar {
-  background: linear-gradient(135deg, #1a0505 0%, #200808 50%, #1a0505 100%);
-  border-bottom: 1px solid rgba(204,0,0,0.3);
-  padding: 14px 24px;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-}
-
 /* Version badge */
 .app-version-badge {
   font-size: 0.65rem;
@@ -82,83 +73,6 @@ header {
   letter-spacing: 0.08em;
   font-family: monospace;
   user-select: none;
-}
-
-.tcb-logo-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-
-.tcb-logo-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.tcb-logo-svg {
-  height: 44px;
-  width: auto;
-  filter: drop-shadow(0 2px 8px rgba(204,0,0,0.4));
-}
-
-.tcb-divider-v {
-  width: 1px;
-  height: 36px;
-  background: rgba(204,0,0,0.35);
-}
-
-.tcb-flame-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-/* TCB header tri-pillar */
-.tcb-header-pillars {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-}
-
-.tcb-header-title {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--tcb-red-light);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.tcb-header-subs {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.tcb-ph {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.tcb-ph-hoa { color: var(--hoa-color); }
-.tcb-ph-tho { color: var(--tho-color); }
-.tcb-ph-kim { color: var(--kim-color); }
-
-.tcb-ph-sep {
-  color: rgba(204,0,0,0.35);
-  font-size: 0.9rem;
-}
-
-.tcb-header-desc {
-  font-size: 0.65rem;
-  color: rgba(204,0,0,0.5);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 
 .logo-symbol {
@@ -251,6 +165,8 @@ main {
 @media (max-width: 600px) {
   .form-grid { grid-template-columns: 1fr; }
   .input-card { padding: 24px; }
+  .section-card { padding: 20px 18px; }
+  .two-col-grid { grid-template-columns: 1fr !important; }
 }
 
 .form-group {
@@ -464,29 +380,6 @@ main {
   background: linear-gradient(90deg, transparent, var(--tcb-red), transparent);
 }
 
-.tab-wrapper {
-  background: var(--dark-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  margin-bottom: 24px;
-  overflow: hidden;
-}
-
-.tab-wrapper .tab-nav {
-  padding: 0 20px;
-  background: var(--dark-card2);
-  border-bottom: 2px solid var(--border);
-}
-
-.tab-wrapper .tab-panels {
-  padding: 28px 32px;
-}
-
-@media (max-width: 600px) {
-  .tab-wrapper .tab-panels { padding: 20px 18px; }
-  .tab-btn { padding: 12px 14px; font-size: 0.82rem; }
-}
-
 .section-header {
   display: flex;
   align-items: center;
@@ -579,58 +472,6 @@ main {
 .result-chip .r-info { flex: 1; }
 .result-chip .r-name { font-weight: 700; color: var(--text); font-size: 1rem; }
 .result-chip .r-desc { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }
-
-/* ========== TABS ========== */
-.tab-nav {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 0;
-  border-bottom: 2px solid var(--border);
-}
-
-.tab-nav::-webkit-scrollbar { display: none; }
-
-.tab-btn {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 13px 20px;
-  background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-
-.tab-btn:hover { color: var(--text); }
-
-.tab-btn.active {
-  color: var(--gold-light);
-  border-bottom-color: var(--gold);
-}
-
-.tab-btn .tab-icon { font-size: 1.1rem; }
-
-.tab-panels {
-  position: relative;
-}
-
-.tab-panel {
-  display: none;
-  animation: fadeIn 0.35s ease;
-}
-
-.tab-panel.active { display: block; }
 
 /* ========== TEXT CONTENT ========== */
 .analysis-text {
@@ -939,10 +780,8 @@ footer {
 /* ========== PRINT ========== */
 @media print {
   body { background: white; color: black; }
-  #particles-bg, header .subtitle, .input-card, .action-row, footer, .tab-nav { display: none; }
-  .tab-panel { display: block !important; }
-  .tab-wrapper { border: none; }
-  .section-card, .report-banner, .verdict-card, .tab-wrapper {
+  #particles-bg, header .subtitle, .input-card, .action-row, footer { display: none; }
+  .section-card, .report-banner, .verdict-card {
     border: 1px solid #ccc;
     box-shadow: none;
     break-inside: avoid;
@@ -1096,14 +935,6 @@ footer {
   border-top: 1px solid rgba(204,0,0,0.15);
   padding-top: 12px;
 }
-
-/* Tab button TCB special */
-.tab-btn.tab-tcb.active {
-  color: var(--tcb-red-light);
-  border-bottom-color: var(--tcb-red);
-}
-
-.tab-btn.tab-tcb:hover { color: var(--tcb-red-light); }
 
 /* Compat bar TCB variant */
 .compat-fill-tcb {
