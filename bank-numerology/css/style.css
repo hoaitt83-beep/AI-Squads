@@ -427,11 +427,23 @@ main {
 .section-card {
   background: var(--dark-card);
   border: 1px solid var(--border);
-  border-radius: 0 0 16px 16px;
+  border-radius: 16px;
   padding: 28px 32px;
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
+}
+
+.section-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.section-card-tcb::before {
+  background: linear-gradient(90deg, transparent, var(--tcb-red), transparent);
 }
 
 .tab-wrapper {
