@@ -5,7 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giải Mã Tài Vận T***bank — Phong Thủy Số Tài Khoản</title>
   <meta name="description" content="Khám phá ý nghĩa phong thủy và thần số học ẩn chứa trong số tài khoản T***bank của bạn">
-  <link rel="stylesheet" href="css/style.css">
+
+  <!-- ① Load version trước — nguồn duy nhất để cập nhật cache & số version -->
+  <script src="js/version.js"></script>
+
+  <!-- ② Inject CSS với version query string (cache-bust tự động) -->
+  <script>
+    (function () {
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = 'css/style.css?v=' + APP_VERSION;
+      document.head.appendChild(l);
+    })();
+  </script>
 </head>
 <body>
 
@@ -35,6 +47,9 @@
         <div class="tcb-header-desc">Tam Trụ Ngân Hàng</div>
       </div>
     </div>
+
+    <!-- Version badge — hiển thị góc phải brand bar -->
+    <div class="app-version-badge" id="app-version-badge"></div>
   </div>
 
   <!-- MYSTICAL TITLE -->
@@ -108,18 +123,29 @@
   <p style="margin-top:6px;opacity:0.5">Thông tin mang tính tham khảo văn hóa và tinh thần. Mọi quyết định tài chính cần dựa trên tư vấn chuyên nghiệp.</p>
 </footer>
 
-<script src="js/analysis.js"></script>
-<script src="js/app.js"></script>
+<!-- ③ Load JS với version query string (cache-bust tự động) -->
+<script>
+  (function () {
+    ['js/analysis.js', 'js/app.js'].forEach(function (src) {
+      document.write('<script src="' + src + '?v=' + APP_VERSION + '"><\/script>');
+    });
+  })();
+</script>
 
 <script>
-  document.getElementById('dob').addEventListener('input', function(e) {
+  // Hiển thị version number
+  document.getElementById('app-version-badge').textContent = 'v' + APP_VERSION;
+
+  // Auto-format DOB
+  document.getElementById('dob').addEventListener('input', function (e) {
     let v = e.target.value.replace(/\D/g, '');
-    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
-    if (v.length >= 6) v = v.slice(0,5) + '/' + v.slice(5);
+    if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+    if (v.length >= 6) v = v.slice(0, 5) + '/' + v.slice(5);
     e.target.value = v.slice(0, 10);
   });
 
-  document.getElementById('account').addEventListener('input', function(e) {
+  // Chỉ cho nhập số
+  document.getElementById('account').addEventListener('input', function (e) {
     e.target.value = e.target.value.replace(/[^\d]/g, '');
   });
 </script>
