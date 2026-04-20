@@ -120,7 +120,7 @@ function renderReport(r, dob, account) {
         Hai con số này ${renderCompatNote(r.lifePathSingle, r.accountNum)}.
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+      <div class="two-col-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
         <div>
           <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Số Đường Đời (Ngày Sinh)</p>
           <div class="result-chip">
