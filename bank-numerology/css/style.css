@@ -321,19 +321,34 @@ main {
 .section-card {
   background: var(--dark-card);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 0 0 16px 16px;
   padding: 28px 32px;
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
 }
 
-.section-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+.tab-wrapper {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.tab-wrapper .tab-nav {
+  padding: 0 20px;
+  background: var(--dark-card2);
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-wrapper .tab-panels {
+  padding: 28px 32px;
+}
+
+@media (max-width: 600px) {
+  .tab-wrapper .tab-panels { padding: 20px 18px; }
+  .tab-btn { padding: 12px 14px; font-size: 0.82rem; }
 }
 
 .section-header {
@@ -429,35 +444,112 @@ main {
 .result-chip .r-name { font-weight: 700; color: var(--text); font-size: 1rem; }
 .result-chip .r-desc { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }
 
+/* ========== TABS ========== */
+.tab-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold);
+}
+
+.tab-btn .tab-icon { font-size: 1.1rem; }
+
+.tab-panels {
+  position: relative;
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+
+.tab-panel.active { display: block; }
+
 /* ========== TEXT CONTENT ========== */
 .analysis-text {
   color: var(--text);
-  line-height: 1.85;
-  font-size: 0.95rem;
+  line-height: 1.9;
+  font-size: 1.05rem;
 }
 
-.analysis-text p { margin-bottom: 12px; }
+.analysis-text p { margin-bottom: 16px; }
+
+.analysis-text strong {
+  color: var(--gold-light);
+  font-weight: 800;
+}
+
+.key-insight {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 20px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, rgba(201,162,39,0.05), transparent);
+  border-radius: 10px;
+  border: 1px solid rgba(201,162,39,0.12);
+}
+
+.key-insight em { color: var(--gold-light); font-style: normal; font-weight: 800; }
 
 .highlight-box {
-  background: linear-gradient(135deg, rgba(0,135,90,0.1), rgba(0,135,90,0.05));
-  border-left: 3px solid var(--jade);
-  border-radius: 0 8px 8px 0;
-  padding: 14px 18px;
-  margin: 16px 0;
+  background: linear-gradient(135deg, rgba(0,135,90,0.12), rgba(0,135,90,0.05));
+  border-left: 4px solid var(--jade);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px;
+  margin: 20px 0;
   color: var(--text);
-  font-size: 0.92rem;
-  line-height: 1.8;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.85;
 }
 
+.highlight-box strong { color: var(--jade-light); font-weight: 800; font-size: 1.1rem; }
+
 .gold-highlight {
-  background: linear-gradient(135deg, rgba(201,162,39,0.08), rgba(201,162,39,0.03));
-  border-left: 3px solid var(--gold);
-  border-radius: 0 8px 8px 0;
-  padding: 14px 18px;
-  margin: 16px 0;
-  font-size: 0.92rem;
-  line-height: 1.8;
+  background: linear-gradient(135deg, rgba(201,162,39,0.1), rgba(201,162,39,0.04));
+  border-left: 4px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px;
+  margin: 20px 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.85;
 }
+
+.gold-highlight strong { color: var(--gold-light); font-weight: 800; font-size: 1.1rem; }
 
 /* ========== LUCKY SEQUENCES ========== */
 .sequences-grid {
@@ -711,16 +803,17 @@ footer {
 /* ========== PRINT ========== */
 @media print {
   body { background: white; color: black; }
-  #particles-bg, header .subtitle, .input-card, .action-row, footer { display: none; }
-  .section-card, .report-banner, .verdict-card {
+  #particles-bg, header .subtitle, .input-card, .action-row, footer, .tab-nav { display: none; }
+  .tab-panel { display: block !important; }
+  .tab-wrapper { border: none; }
+  .section-card, .report-banner, .verdict-card, .tab-wrapper {
     border: 1px solid #ccc;
     box-shadow: none;
     break-inside: avoid;
   }
-  .section-card::before { display: none; }
   * { color: black !important; background: white !important; }
   .digit-chip .d-num, .score-val, .result-chip .r-num, .seq-num, .section-title,
-  .verdict-statement em { color: #8a6010 !important; }
+  .verdict-statement em, .key-insight em { color: #8a6010 !important; }
 }
 
 /* ========== DIVIDER ========== */
