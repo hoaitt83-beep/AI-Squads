@@ -99,11 +99,46 @@ header {
   gap: 2px;
 }
 
-.tcb-flame-icon { font-size: 1.5rem; line-height: 1; }
-.tcb-flame-label {
-  font-size: 0.7rem;
-  font-weight: 700;
+/* TCB header tri-pillar */
+.tcb-header-pillars {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.tcb-header-title {
+  font-size: 0.72rem;
+  font-weight: 800;
   color: var(--tcb-red-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tcb-header-subs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tcb-ph {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.tcb-ph-hoa { color: var(--hoa-color); }
+.tcb-ph-tho { color: var(--tho-color); }
+.tcb-ph-kim { color: var(--kim-color); }
+
+.tcb-ph-sep {
+  color: rgba(204,0,0,0.35);
+  font-size: 0.9rem;
+}
+
+.tcb-header-desc {
+  font-size: 0.65rem;
+  color: rgba(204,0,0,0.5);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -1043,6 +1078,13 @@ footer {
 /* Compat bar TCB variant */
 .compat-fill-tcb {
   background: linear-gradient(90deg, var(--tcb-red-dim), var(--tcb-red), #e84040);
+}
+
+/* Narrative block inside verdict-card */
+.verdict-tcb-narrative {
+  text-align: left;
+  margin: 20px 0;
+  font-size: 1rem;
 }
 
 /* ========== FOOTER TCB ========== */

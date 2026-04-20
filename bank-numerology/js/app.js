@@ -89,6 +89,10 @@ function renderReport(r, dob, account) {
         Với số vận <em>${r.accountNum}</em> và độ tương hợp <em>${r.relation.pct}%</em> với bản mệnh,
         đây là con số mang lại <em>${renderVerdictKeywords(r)}</em> — người bạn đồng hành tài chính đáng tin cậy và bền lâu.
       </div>
+      <div class="tcb-highlight verdict-tcb-narrative">
+        <strong>✦ Số tài khoản × Mệnh Hỏa Techcombank:</strong><br>
+        ${renderTCBAccountNarrative(r, fmt)}
+      </div>
       <div class="tag-row" style="justify-content:center">
         <span class="tag-pill">Tài Vận ${r.overallScore}/100</span>
         <span class="tag-pill">${r.relation.label}</span>
@@ -377,12 +381,6 @@ function renderReport(r, dob, account) {
             </div>
             <div class="tcb-relation-desc">${r.tcbRelation.desc}</div>
             <div class="tcb-relation-advice">💡 ${r.tcbRelation.advice}</div>
-          </div>
-
-          <!-- Account + TCB combined -->
-          <div class="tcb-highlight">
-            <strong>✦ Số tài khoản × Mệnh Hỏa Techcombank:</strong><br>
-            ${renderTCBAccountNarrative(r, fmt)}
           </div>
 
           <div class="analysis-text">
