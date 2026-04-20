@@ -90,7 +90,7 @@ function renderReport(r, dob, account) {
         đây là con số mang lại <em>${renderVerdictKeywords(r)}</em> — người bạn đồng hành tài chính đáng tin cậy và bền lâu.
       </div>
       <div class="tcb-highlight verdict-tcb-narrative">
-        <strong>✦ Số tài khoản × Mệnh Hỏa Techcombank:</strong><br>
+        <strong>✦ TƯƠNG QUAN BẢN MỆNH × TECHCOMBANK:</strong><br>
         ${renderTCBAccountNarrative(r, fmt)}
       </div>
       <div class="tag-row" style="justify-content:center">
