@@ -31,13 +31,45 @@ const SINGLE_NUM_INFO = {
 };
 
 // ── Five Elements (Ngũ Hành) ──────────────────────────────────
-const ELEMENT_BY_YEAR_LAST_DIGIT = {
-  0: 'kim', 1: 'kim',
-  2: 'thuy', 3: 'thuy',
-  4: 'moc', 5: 'moc',
-  6: 'hoa', 7: 'hoa',
-  8: 'tho', 9: 'tho',
-};
+// Nạp Âm: hệ chuẩn người Việt dùng để xác định bản mệnh ngũ hành.
+// 30 cặp năm trong chu kỳ 60 năm Can Chi, gốc 1984 = Giáp Tý (vị trí 0).
+const NAP_AM = [
+  { el:'kim',  name:'Hải Trung Kim' },    // 0: Giáp Tý / Ất Sửu
+  { el:'hoa',  name:'Lô Trung Hỏa' },    // 1: Bính Dần / Đinh Mão
+  { el:'moc',  name:'Đại Lâm Mộc' },     // 2: Mậu Thìn / Kỷ Tỵ
+  { el:'tho',  name:'Lộ Bàng Thổ' },     // 3: Canh Ngọ / Tân Mùi
+  { el:'kim',  name:'Kiếm Phong Kim' },   // 4: Nhâm Thân / Quý Dậu
+  { el:'hoa',  name:'Sơn Đầu Hỏa' },     // 5: Giáp Tuất / Ất Hợi
+  { el:'thuy', name:'Giản Hạ Thủy' },    // 6: Bính Tý / Đinh Sửu
+  { el:'hoa',  name:'Thành Đầu Hỏa' },   // 7: Mậu Dần / Kỷ Mão
+  { el:'kim',  name:'Bạch Lạp Kim' },    // 8: Canh Thìn / Tân Tỵ
+  { el:'moc',  name:'Dương Liễu Mộc' },  // 9: Nhâm Ngọ / Quý Mùi
+  { el:'thuy', name:'Tuyền Trung Thủy' },//10: Giáp Thân / Ất Dậu
+  { el:'tho',  name:'Ốc Thượng Thổ' },   //11: Bính Tuất / Đinh Hợi
+  { el:'hoa',  name:'Tích Lịch Hỏa' },   //12: Mậu Tý / Kỷ Sửu
+  { el:'moc',  name:'Tùng Bách Mộc' },   //13: Canh Dần / Tân Mão
+  { el:'thuy', name:'Trường Lưu Thủy' }, //14: Nhâm Thìn / Quý Tỵ
+  { el:'kim',  name:'Sa Trung Kim' },     //15: Giáp Ngọ / Ất Mùi
+  { el:'hoa',  name:'Sơn Hạ Hỏa' },     //16: Bính Thân / Đinh Dậu
+  { el:'moc',  name:'Bình Địa Mộc' },    //17: Mậu Tuất / Kỷ Hợi
+  { el:'tho',  name:'Bích Thượng Thổ' }, //18: Canh Tý / Tân Sửu
+  { el:'kim',  name:'Kim Bạch Kim' },     //19: Nhâm Dần / Quý Mão
+  { el:'hoa',  name:'Phú Đăng Hỏa' },    //20: Giáp Thìn / Ất Tỵ
+  { el:'thuy', name:'Thiên Hà Thủy' },   //21: Bính Ngọ / Đinh Mùi
+  { el:'tho',  name:'Đại Dịch Thổ' },    //22: Mậu Thân / Kỷ Dậu
+  { el:'kim',  name:'Thoa Xuyến Kim' },   //23: Canh Tuất / Tân Hợi
+  { el:'moc',  name:'Tang Đố Mộc' },     //24: Nhâm Tý / Quý Sửu
+  { el:'thuy', name:'Đại Khê Thủy' },    //25: Giáp Dần / Ất Mão
+  { el:'tho',  name:'Sa Trung Thổ' },    //26: Bính Thìn / Đinh Tỵ
+  { el:'hoa',  name:'Thiên Thượng Hỏa' },//27: Mậu Ngọ / Kỷ Mùi
+  { el:'moc',  name:'Thạch Lựu Mộc' },   //28: Canh Thân / Tân Dậu
+  { el:'thuy', name:'Đại Hải Thủy' },    //29: Nhâm Tuất / Quý Hợi
+];
+
+function getNapAm(year) {
+  const pos = ((year - 1984) % 60 + 60) % 60;
+  return NAP_AM[Math.floor(pos / 2)];
+}
 
 const ELEMENT_BY_DIGIT = {
   1: 'thuy', 6: 'thuy',
@@ -78,21 +110,29 @@ const LUCKY_SEQUENCES = [
   { seq: '189', name: 'Nhất Phát Cửu', meaning: 'Phát tài trường cửu, tài lộc không ngừng', tier: 'gold' },
   { seq: '369', name: 'Tam Lục Cửu', meaning: 'Tam đa hội tụ, lộc phúc trường thọ', tier: 'silver' },
   { seq: '528', name: 'Ngũ Song Phát', meaning: 'Ngũ hành cân bằng, song hỷ phát tài', tier: 'silver' },
-  { seq: '168', name: 'Nhất Lộc Phát', meaning: 'Con đường nhất phát tài lộc', tier: 'platinum' },
+  { seq: '698', name: 'Lộc Cửu Phát', meaning: 'Lộc bền lâu, trường thịnh phát tài', tier: 'gold' },
   { seq: '8888', name: 'Tứ Bát Đại Cát', meaning: 'Tứ phương tài lộc, đại cát đại lợi', tier: 'platinum' },
   { seq: '138', name: 'Nhất Tam Phát', meaning: 'Nhất sinh tam, tam sinh vạn vật, phát tài', tier: 'gold' },
 ];
 
 // ── I Ching hexagrams (simplified) ───────────────────────────
 const HEXAGRAMS = [
-  { name: '䷀ Kiền - Thuần Càn', lines: [true,true,true,true,true,true], meaning: 'Sức mạnh thiên thượng, tự lực cánh sinh, thời vận hưng thịnh tột đỉnh' },
-  { name: '䷆ Sư - Địa Thủy', lines: [false,true,false,false,false,false], meaning: 'Trí tướng soái, lãnh đạo kỷ luật dẫn đến thắng lợi bền vững' },
-  { name: '䷉ Lý - Thiên Trạch', lines: [true,false,true,true,true,true], meaning: 'Bước đi khéo léo, tiến thoái đúng lúc, hanh thông mọi nẻo' },
-  { name: '䷙ Đại Súc - Sơn Thiên', lines: [true,false,false,true,true,true], meaning: 'Tích lũy lớn lao, nuôi dưỡng đức tài, thời cơ sẽ đến' },
-  { name: '䷡ Đại Tráng - Lôi Thiên', lines: [true,true,false,false,true,true], meaning: 'Dũng mãnh như sấm, thế lực đang ở đỉnh cao thịnh vượng' },
-  { name: '䷊ Thái - Địa Thiên', lines: [false,false,false,true,true,true], meaning: 'Thiên địa giao hòa, vạn vật thông suốt, đại cát đại lợi' },
-  { name: '䷿ Ký Tế - Thủy Hỏa', lines: [true,false,true,false,true,false], meaning: 'Thành công viên mãn, mọi việc đã hoàn tất theo đúng trật tự' },
-  { name: '䷃ Mông - Sơn Thủy', lines: [false,true,false,false,false,true], meaning: 'Khai minh học hỏi, nền tảng tri thức tạo nên vận mệnh vĩ đại' },
+  { name: '䷀ Kiền - Thuần Càn',    lines: [true,true,true,true,true,true],     meaning: 'Sức mạnh thiên thượng, tự lực cánh sinh, thời vận hưng thịnh tột đỉnh' },
+  { name: '䷆ Sư - Địa Thủy',       lines: [false,true,false,false,false,false], meaning: 'Trí tướng soái, lãnh đạo kỷ luật dẫn đến thắng lợi bền vững' },
+  { name: '䷉ Lý - Thiên Trạch',    lines: [true,false,true,true,true,true],     meaning: 'Bước đi khéo léo, tiến thoái đúng lúc, hanh thông mọi nẻo' },
+  { name: '䷙ Đại Súc - Sơn Thiên', lines: [true,false,false,true,true,true],    meaning: 'Tích lũy lớn lao, nuôi dưỡng đức tài, thời cơ sẽ đến' },
+  { name: '䷡ Đại Tráng - Lôi Thiên',lines:[true,true,false,false,true,true],    meaning: 'Dũng mãnh như sấm, thế lực đang ở đỉnh cao thịnh vượng' },
+  { name: '䷊ Thái - Địa Thiên',    lines: [false,false,false,true,true,true],   meaning: 'Thiên địa giao hòa, vạn vật thông suốt, đại cát đại lợi' },
+  { name: '䷿ Ký Tế - Thủy Hỏa',   lines: [true,false,true,false,true,false],   meaning: 'Thành công viên mãn, mọi việc đã hoàn tất theo đúng trật tự' },
+  { name: '䷃ Mông - Sơn Thủy',    lines: [false,true,false,false,false,true],   meaning: 'Khai minh học hỏi, nền tảng tri thức tạo nên vận mệnh vĩ đại' },
+  { name: '�Bio Tỷ - Địa Thủy',    lines: [false,true,false,false,false,false],  meaning: 'Thân cận bền chặt, hợp tác đồng lòng, tài lộc đến từ nhân duyên' },
+  { name: '䷈ Tiểu Súc - Phong Thiên',lines:[true,true,true,false,true,true],    meaning: 'Tích lũy từng bước nhỏ, kiên nhẫn là chìa khóa của phú quý lâu bền' },
+  { name: '䷣ Minh Di - Địa Hỏa',  lines: [false,false,false,true,false,true],   meaning: 'Ánh sáng ẩn trong bóng tối, trí tuệ bảo tồn để chờ thời cơ bùng sáng' },
+  { name: '䷱ Đỉnh - Hỏa Phong',   lines: [true,false,true,true,false,true],     meaning: 'Luyện hóa thành tinh, tài năng được trọng dụng, danh lợi song toàn' },
+  { name: '䷲ Chấn - Thuần Lôi',   lines: [true,false,false,true,false,false],   meaning: 'Sấm động khai mở, sức bật mạnh mẽ, cơ hội lớn đến bất ngờ' },
+  { name: '䷼ Trung Phu - Phong Trạch',lines:[true,true,false,false,true,true],  meaning: 'Chân thành cảm hóa lòng người, tín nghĩa là nền tảng tài vận bền vững' },
+  { name: '䷜ Khảm - Thuần Thủy',   lines: [false,true,false,false,true,false],  meaning: 'Dòng chảy xuyên qua mọi trở ngại, linh hoạt thích ứng là sức mạnh' },
+  { name: '䷝ Ly - Thuần Hỏa',     lines: [true,false,true,true,false,true],     meaning: 'Ánh sáng rực rỡ tỏa sáng bốn phương, danh tiếng lan xa, tài vận thịnh vượng' },
 ];
 
 // ── T***bank Feng Shui ─────────────────────────────────────
@@ -167,8 +207,10 @@ function analyzeAccount(dob, accountNumber) {
   let accountSum = digits.reduce((a, b) => a + b, 0);
   let accountNum = reduceToSingle(accountSum);
 
-  // Five elements
-  const birthElement = ELEMENT_BY_YEAR_LAST_DIGIT[birthYear % 10];
+  // Five elements — dùng Nạp Âm (hệ chuẩn xác định bản mệnh người Việt)
+  const napAm = getNapAm(birthYear);
+  const birthElement = napAm.el;
+  const birthNapAm = napAm.name;
   const accountElementCounts = {};
   digits.forEach(d => {
     const el = ELEMENT_BY_DIGIT[d];
@@ -207,7 +249,7 @@ function analyzeAccount(dob, accountNumber) {
     digits, accountStr, birthYear, birthDay, birthMonth,
     lifePath, lifePathSingle, lifePathInfo: LIFE_PATH_INFO[lifePath] || LIFE_PATH_INFO[lifePathSingle],
     accountNum, accountNumInfo: SINGLE_NUM_INFO[accountNum],
-    birthElement, dominantAccountElement, accountElementCounts,
+    birthElement, birthNapAm, dominantAccountElement, accountElementCounts,
     relation, foundSeqs, hexagram,
     numCompat, overallScore,
     eightCount, sixCount, nineCount,

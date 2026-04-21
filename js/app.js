@@ -222,7 +222,7 @@ function renderReport(r, dob, account) {
       <div class="gold-divider"><span>✦</span></div>
 
       <div class="key-insight">
-        Bản mệnh <em>${el[r.birthElement].name} ${el[r.birthElement].emoji}</em> và số tài khoản hành <em>${el[r.dominantAccountElement].name} ${el[r.dominantAccountElement].emoji}</em>
+        Bản mệnh <em>${el[r.birthElement].name} ${el[r.birthElement].emoji}</em> (<em>${r.birthNapAm}</em>) và số tài khoản hành <em>${el[r.dominantAccountElement].name} ${el[r.dominantAccountElement].emoji}</em>
         — quan hệ <em>${r.relation.label}</em>, độ tương hợp <em>${r.relation.pct}%</em>.
       </div>
 
@@ -238,7 +238,7 @@ function renderReport(r, dob, account) {
       </div>
 
       <div class="analysis-text" style="margin-top:20px">
-        <p>Bạn sinh năm <strong>${r.birthYear}</strong>, bản mệnh thuộc hành <strong>${el[r.birthElement].name} (${el[r.birthElement].emoji})</strong> — ${el[r.birthElement].desc}</p>
+        <p>Bạn sinh năm <strong>${r.birthYear}</strong>, bản mệnh thuộc hành <strong>${el[r.birthElement].name} (${el[r.birthElement].emoji})</strong> theo Nạp Âm <em>${r.birthNapAm}</em> — ${el[r.birthElement].desc}</p>
         <p>Số tài khoản có trường khí chủ đạo hành <strong>${el[r.dominantAccountElement].name}</strong>, tạo nên mối quan hệ <strong>${r.relation.label}</strong> với bản mệnh bạn.</p>
       </div>
 

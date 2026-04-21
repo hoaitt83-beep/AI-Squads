@@ -7,4 +7,4 @@
  *   MINOR — thêm tính năng mới / UI cải tiến
  *   PATCH — sửa lỗi nhỏ / chỉnh wording
  */
-const APP_VERSION = '1.2.1';
+const APP_VERSION = '1.3.1';
