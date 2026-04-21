@@ -31,13 +31,45 @@ const SINGLE_NUM_INFO = {
 };
 
 // ── Five Elements (Ngũ Hành) ──────────────────────────────────
-const ELEMENT_BY_YEAR_LAST_DIGIT = {
-  0: 'kim', 1: 'kim',
-  2: 'thuy', 3: 'thuy',
-  4: 'moc', 5: 'moc',
-  6: 'hoa', 7: 'hoa',
-  8: 'tho', 9: 'tho',
-};
+// Nạp Âm: hệ chuẩn người Việt dùng để xác định bản mệnh ngũ hành.
+// 30 cặp năm trong chu kỳ 60 năm Can Chi, gốc 1984 = Giáp Tý (vị trí 0).
+const NAP_AM = [
+  { el:'kim',  name:'Hải Trung Kim' },    // 0: Giáp Tý / Ất Sửu
+  { el:'hoa',  name:'Lô Trung Hỏa' },    // 1: Bính Dần / Đinh Mão
+  { el:'moc',  name:'Đại Lâm Mộc' },     // 2: Mậu Thìn / Kỷ Tỵ
+  { el:'tho',  name:'Lộ Bàng Thổ' },     // 3: Canh Ngọ / Tân Mùi
+  { el:'kim',  name:'Kiếm Phong Kim' },   // 4: Nhâm Thân / Quý Dậu
+  { el:'hoa',  name:'Sơn Đầu Hỏa' },     // 5: Giáp Tuất / Ất Hợi
+  { el:'thuy', name:'Giản Hạ Thủy' },    // 6: Bính Tý / Đinh Sửu
+  { el:'hoa',  name:'Thành Đầu Hỏa' },   // 7: Mậu Dần / Kỷ Mão
+  { el:'kim',  name:'Bạch Lạp Kim' },    // 8: Canh Thìn / Tân Tỵ
+  { el:'moc',  name:'Dương Liễu Mộc' },  // 9: Nhâm Ngọ / Quý Mùi
+  { el:'thuy', name:'Tuyền Trung Thủy' },//10: Giáp Thân / Ất Dậu
+  { el:'tho',  name:'Ốc Thượng Thổ' },   //11: Bính Tuất / Đinh Hợi
+  { el:'hoa',  name:'Tích Lịch Hỏa' },   //12: Mậu Tý / Kỷ Sửu
+  { el:'moc',  name:'Tùng Bách Mộc' },   //13: Canh Dần / Tân Mão
+  { el:'thuy', name:'Trường Lưu Thủy' }, //14: Nhâm Thìn / Quý Tỵ
+  { el:'kim',  name:'Sa Trung Kim' },     //15: Giáp Ngọ / Ất Mùi
+  { el:'hoa',  name:'Sơn Hạ Hỏa' },     //16: Bính Thân / Đinh Dậu
+  { el:'moc',  name:'Bình Địa Mộc' },    //17: Mậu Tuất / Kỷ Hợi
+  { el:'tho',  name:'Bích Thượng Thổ' }, //18: Canh Tý / Tân Sửu
+  { el:'kim',  name:'Kim Bạch Kim' },     //19: Nhâm Dần / Quý Mão
+  { el:'hoa',  name:'Phú Đăng Hỏa' },    //20: Giáp Thìn / Ất Tỵ
+  { el:'thuy', name:'Thiên Hà Thủy' },   //21: Bính Ngọ / Đinh Mùi
+  { el:'tho',  name:'Đại Dịch Thổ' },    //22: Mậu Thân / Kỷ Dậu
+  { el:'kim',  name:'Thoa Xuyến Kim' },   //23: Canh Tuất / Tân Hợi
+  { el:'moc',  name:'Tang Đố Mộc' },     //24: Nhâm Tý / Quý Sửu
+  { el:'thuy', name:'Đại Khê Thủy' },    //25: Giáp Dần / Ất Mão
+  { el:'tho',  name:'Sa Trung Thổ' },    //26: Bính Thìn / Đinh Tỵ
+  { el:'hoa',  name:'Thiên Thượng Hỏa' },//27: Mậu Ngọ / Kỷ Mùi
+  { el:'moc',  name:'Thạch Lựu Mộc' },   //28: Canh Thân / Tân Dậu
+  { el:'thuy', name:'Đại Hải Thủy' },    //29: Nhâm Tuất / Quý Hợi
+];
+
+function getNapAm(year) {
+  const pos = ((year - 1984) % 60 + 60) % 60;
+  return NAP_AM[Math.floor(pos / 2)];
+}
 
 const ELEMENT_BY_DIGIT = {
   1: 'thuy', 6: 'thuy',
@@ -167,8 +199,10 @@ function analyzeAccount(dob, accountNumber) {
   let accountSum = digits.reduce((a, b) => a + b, 0);
   let accountNum = reduceToSingle(accountSum);
 
-  // Five elements
-  const birthElement = ELEMENT_BY_YEAR_LAST_DIGIT[birthYear % 10];
+  // Five elements — dùng Nạp Âm (hệ chuẩn xác định bản mệnh người Việt)
+  const napAm = getNapAm(birthYear);
+  const birthElement = napAm.el;
+  const birthNapAm = napAm.name;
   const accountElementCounts = {};
   digits.forEach(d => {
     const el = ELEMENT_BY_DIGIT[d];
@@ -207,7 +241,7 @@ function analyzeAccount(dob, accountNumber) {
     digits, accountStr, birthYear, birthDay, birthMonth,
     lifePath, lifePathSingle, lifePathInfo: LIFE_PATH_INFO[lifePath] || LIFE_PATH_INFO[lifePathSingle],
     accountNum, accountNumInfo: SINGLE_NUM_INFO[accountNum],
-    birthElement, dominantAccountElement, accountElementCounts,
+    birthElement, birthNapAm, dominantAccountElement, accountElementCounts,
     relation, foundSeqs, hexagram,
     numCompat, overallScore,
     eightCount, sixCount, nineCount,
